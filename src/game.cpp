@@ -3,23 +3,19 @@
 
 void Game::update(const sf::Int32 deltaMS)
 {
-    
+
 }
 
 void Game::render(sf::RenderWindow& window) const
 {
     window.clear();
 
-    window.draw(m_coso);
-
     window.display();
 }
 
-void Game::init()
+void Game::init(sf::VideoMode videoMode)
 {
-    m_coso.setSize(sf::Vector2f(50.f, 50.f));
-    m_coso.setFillColor(sf::Color(0, 0, 255));
-    m_coso.setPosition(100.f, 100.f);
+
 }
 
 void Game::restart()

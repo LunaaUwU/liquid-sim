@@ -13,15 +13,13 @@ public:
 
     void render(sf::RenderWindow& window) const;
 
-    void init();
+    void init(sf::VideoMode videoMode);
 
     void restart();
 
 private:
 
     int randomInt(int min, int max);
-
-    sf::RectangleShape m_coso;
 
     std::random_device rd;
 

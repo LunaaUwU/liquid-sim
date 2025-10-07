@@ -3,14 +3,15 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "Liquid Simulator", sf::Style::Fullscreen};
+    sf::VideoMode videoMode = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window = sf::RenderWindow{ { videoMode.width, videoMode.height }, "Liquid Simulator", sf::Style::Fullscreen};
     window.setFramerateLimit(144);
     sf::Clock deltaClock;
     sf::Time elapsed;
 
     Game* game = new Game();
 
-    game->init();
+    game->init(videoMode);
 
     while (window.isOpen())
     {

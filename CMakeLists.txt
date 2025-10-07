@@ -14,14 +14,14 @@ FetchContent_MakeAvailable(SFML)
 
 set(PROJECT_HEADERS 
     include/game.h
-    include/block.h
+    include/grid.h
     include/material-type.h
 )
 
 set(PROJECT_SOURCES 
     src/main.cpp
     src/game.cpp
-    src/block.cpp
+    src/grid.cpp
 )
 
 set(PROJECT_FILES 
