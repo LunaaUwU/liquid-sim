@@ -3,7 +3,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "Minesweeper"};
+    auto window = sf::RenderWindow{ { 1920u, 1080u }, "Liquid Simulator", sf::Style::Fullscreen};
     window.setFramerateLimit(144);
     sf::Clock deltaClock;
     sf::Time elapsed;
@@ -25,6 +25,10 @@ int main()
 
         if (window.hasFocus())
         {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            {
+                window.close();
+            }
             game->update(elapsed.asMilliseconds());
             game->render(window);
         }
