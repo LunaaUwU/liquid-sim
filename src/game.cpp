@@ -1,21 +1,22 @@
 #include "game.h"
 
+void Game::init(sf::VideoMode videoMode)
+{
+    grid->init(videoMode);
+}
 
 void Game::update(const sf::Int32 deltaMS)
 {
-
+    grid->update(deltaMS);
 }
 
 void Game::render(sf::RenderWindow& window) const
 {
     window.clear();
 
+    grid->render(window);
+
     window.display();
-}
-
-void Game::init(sf::VideoMode videoMode)
-{
-
 }
 
 void Game::restart()
