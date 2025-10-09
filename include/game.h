@@ -19,7 +19,7 @@ public:
     void restart();
 
 
-    static constexpr float MOVE_INTERVAL = 25.f;
+    static constexpr float MOVE_INTERVAL = 0.f;
 
     static int randomInt(int min, int max);
 

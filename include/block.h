@@ -4,6 +4,8 @@
 
 #include "material-type.h"
 
+class Grid;
+
 class Block
 {
 public:

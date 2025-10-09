@@ -1,9 +1,10 @@
 #include "block.h"
+#include "grid.h"
 
 void Block::init(MaterialType materialType, int posX, int posY)
 {
 	setMatType(materialType);
-	shape.setSize(sf::Vector2f(10.f, 10.f));
+	shape.setSize(sf::Vector2f(Grid::CELL_SIZE, Grid::CELL_SIZE));
 	shape.setPosition(posX, posY);
 }
 

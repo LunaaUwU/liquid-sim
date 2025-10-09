@@ -17,12 +17,14 @@ public:
 
 	void render(sf::RenderWindow& window) const;
 
+
+	static constexpr float CELL_SIZE = 10.f;
+
 private:
 
 	float m_moveTimer = 0.f;
 
 	void move(int i, int j);
-
 	int m_rows;
 	int m_columns;
 

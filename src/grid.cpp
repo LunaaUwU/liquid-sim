@@ -5,8 +5,8 @@
 
 void Grid::init(sf::VideoMode videoMode)
 {
-	m_columns = videoMode.width / 10;
-	m_rows = videoMode.height / 10;
+	m_columns = videoMode.width / CELL_SIZE;
+	m_rows = videoMode.height / CELL_SIZE;
 	MaterialType type;
 	m_grid.resize(m_rows, std::vector<Block*>(m_columns, nullptr));
 	float posX = 0;
@@ -18,7 +18,7 @@ void Grid::init(sf::VideoMode videoMode)
 			{
 				type = MaterialType::Ground;
 			}
-			else if (posY == 0 || posX == 0 || posX == videoMode.width - 10)
+			else if (posY == 0 || posX == 0 || posX == videoMode.width - CELL_SIZE)
 			{
 				type = MaterialType::Metal;
 			}
@@ -27,9 +27,9 @@ void Grid::init(sf::VideoMode videoMode)
 				type = MaterialType::None;
 			}
 			m_grid[i][j]->init(type, posX, posY);
-			posX += 10.f;
+			posX += CELL_SIZE;
 		}
-		posY += 10.f;
+		posY += CELL_SIZE;
 		posX = 0.f;
 	}
 }
@@ -40,7 +40,10 @@ void Grid::update(const sf::Int32 deltaMS)
 	
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		m_grid[sf::Mouse::getPosition().y / 10][sf::Mouse::getPosition().x / 10]->setMatType(MaterialType::Sand);
+		if (m_grid[sf::Mouse::getPosition().y / CELL_SIZE][sf::Mouse::getPosition().x / 10]->getMatType() == MaterialType::None)
+		{
+			m_grid[sf::Mouse::getPosition().y / CELL_SIZE][sf::Mouse::getPosition().x / 10]->setMatType(MaterialType::Sand);
+		}
 	}
 
 	// MOVEMENT
@@ -99,7 +102,7 @@ void Grid::move(int i, int j)
 						m_grid[i][j]->setMatType(MaterialType::None);
 						m_grid[i + 1][j + 1]->setMatType(oldMat);
 					}
-					if (m_grid[i + 1][j - 1]->getMatType() == MaterialType::None)
+					else if (m_grid[i + 1][j - 1]->getMatType() == MaterialType::None)
 					{
 						m_grid[i][j]->setMatType(MaterialType::None);
 						m_grid[i + 1][j - 1]->setMatType(oldMat);
