@@ -1,5 +1,8 @@
 #include "game.h"
 
+std::random_device Game::rd;
+std::mt19937 Game::gen(Game::rd());
+
 void Game::init(sf::VideoMode videoMode)
 {
     grid->init(videoMode);
@@ -28,11 +31,9 @@ int Game::randomInt(int min, int max)
 {
     if (min > max)
     {
-        int old = min;
-        min = max;
-        max = old;
+        std::swap(min, max);
     }
-    std::mt19937 gen(rd());
+
     std::uniform_int_distribution<int> dist(min, max);
     return dist(gen);
 }

@@ -18,14 +18,18 @@ public:
 
     void restart();
 
+
     static constexpr float MOVE_INTERVAL = 25.f;
+
+    static int randomInt(int min, int max);
 
 private:
 
     Grid* grid = new Grid();
 
-    int randomInt(int min, int max);
+    
 
-    std::random_device rd;
+    static std::random_device rd;
+    static std::mt19937 gen;
 
 };

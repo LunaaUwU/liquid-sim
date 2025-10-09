@@ -22,10 +22,6 @@ void Grid::init(sf::VideoMode videoMode)
 			{
 				type = MaterialType::Metal;
 			}
-			else if (posY <= 30)
-			{
-				type = MaterialType::Water;
-			}
 			else
 			{
 				type = MaterialType::None;
@@ -40,6 +36,14 @@ void Grid::init(sf::VideoMode videoMode)
 
 void Grid::update(const sf::Int32 deltaMS)
 {
+	// INPUT
+	
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		m_grid[sf::Mouse::getPosition().y / 10][sf::Mouse::getPosition().x / 10]->setMatType(MaterialType::Sand);
+	}
+
+	// MOVEMENT
 	m_moveTimer += deltaMS;
 	if (m_moveTimer >= Game::MOVE_INTERVAL)
 	{
@@ -66,14 +70,40 @@ void Grid::move(int i, int j)
 	MaterialType oldMat = m_grid[i][j]->getMatType();
 	switch (oldMat)
 	{
-		case MaterialType::Water:
+		case MaterialType::Sand:
 		{
-			if (i < m_rows)
+			if (m_grid[i + 1][j]->getMatType() == MaterialType::None)
 			{
-				if (m_grid[i + 1][j]->getMatType() == MaterialType::None)
+				m_grid[i][j]->setMatType(MaterialType::None);
+				m_grid[i + 1][j]->setMatType(oldMat);
+			}
+			else
+			{
+				if (Game::randomInt(0, 1) == 0)
 				{
-					m_grid[i][j]->setMatType(MaterialType::None);
-					m_grid[i + 1][j]->setMatType(oldMat);
+					if (m_grid[i + 1][j - 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i + 1][j - 1]->setMatType(oldMat);
+					}
+					else if(m_grid[i + 1][j + 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i + 1][j + 1]->setMatType(oldMat);
+					}
+				}
+				else
+				{
+					if (m_grid[i + 1][j + 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i + 1][j + 1]->setMatType(oldMat);
+					}
+					if (m_grid[i + 1][j - 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i + 1][j - 1]->setMatType(oldMat);
+					}
 				}
 			}
 			break;
