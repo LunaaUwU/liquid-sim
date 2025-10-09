@@ -18,6 +18,8 @@ public:
 
     void restart();
 
+    static constexpr float MOVE_INTERVAL = 25.f;
+
 private:
 
     Grid* grid = new Grid();

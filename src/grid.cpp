@@ -1,4 +1,7 @@
+#include <iostream>
+
 #include "grid.h"
+#include "game.h"
 
 void Grid::init(sf::VideoMode videoMode)
 {
@@ -10,14 +13,18 @@ void Grid::init(sf::VideoMode videoMode)
 	float posY = 0;
 	for (int i = 0; i < m_rows; ++i) {
 		for (int j = 0; j < m_columns; ++j) {
-			m_grid[i][j] = new Block(); // Create a tile for each position
-			if (posY <= 20)
-			{
-				type = MaterialType::Water;
-			}
-			else if(posY >= videoMode.height - 60)
+			m_grid[i][j] = new Block(); // Create a block for each position
+			if (posY >= videoMode.height - 60)
 			{
 				type = MaterialType::Ground;
+			}
+			else if (posY == 0 || posX == 0 || posX == videoMode.width - 10)
+			{
+				type = MaterialType::Metal;
+			}
+			else if (posY <= 30)
+			{
+				type = MaterialType::Water;
 			}
 			else
 			{
@@ -33,12 +40,16 @@ void Grid::init(sf::VideoMode videoMode)
 
 void Grid::update(const sf::Int32 deltaMS)
 {
-	for (int i = m_rows - 1; i >= 0; --i) {
-		for (int j = m_columns - 1; j >= 0; --j) {
-			move(i, j);
+	m_moveTimer += deltaMS;
+	if (m_moveTimer >= Game::MOVE_INTERVAL)
+	{
+		m_moveTimer = 0;
+		for (int i = m_rows - 1; i >= 0; --i) {
+			for (int j = m_columns - 1; j >= 0; --j) {
+				move(i, j);
+			}
 		}
 	}
-	
 }
 
 void Grid::render(sf::RenderWindow& window) const

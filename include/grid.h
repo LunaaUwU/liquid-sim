@@ -5,6 +5,8 @@
 #include "block.h"
 #include "material-type.h"
 
+class Game;
+
 class Grid
 {
 public:
@@ -16,6 +18,8 @@ public:
 	void render(sf::RenderWindow& window) const;
 
 private:
+
+	float m_moveTimer = 0.f;
 
 	void move(int i, int j);
 
