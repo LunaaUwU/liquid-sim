@@ -2,8 +2,8 @@
 
 enum class MaterialType {
     None,
-    Water,
     Sand,
+    Water,
     Stone,
     Metal,
     Ground,

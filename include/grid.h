@@ -17,6 +17,8 @@ public:
 
 	void render(sf::RenderWindow& window) const;
 
+	void inputEvent(const sf::Event& event);
+
 
 	static constexpr float CELL_SIZE = 10.f;
 
@@ -35,4 +37,8 @@ private:
 	std::vector<Block*> m_activeGrid;
 
 	std::vector<MaterialType> m_materialList;
+	MaterialType m_selectedMaterial;
+	int m_selectedMaterialIndex;
+
+	bool m_leftMouseHeld = false;
 };

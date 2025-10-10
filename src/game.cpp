@@ -22,6 +22,11 @@ void Game::render(sf::RenderWindow& window) const
     window.display();
 }
 
+void Game::inputEvent(const sf::Event& event)
+{
+    grid->inputEvent(event);
+}
+
 void Game::restart()
 {
     

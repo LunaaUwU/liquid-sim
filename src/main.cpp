@@ -21,6 +21,8 @@ int main()
             {
                 window.close();
             }
+
+            game->inputEvent(event);
         }
         elapsed = deltaClock.restart();
 
