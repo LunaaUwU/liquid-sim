@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "grid.h"
+#include "material-type.h"
 
 #include <random>
 
@@ -25,11 +26,13 @@ public:
 
     static int randomInt(int min, int max);
 
+    static void changeSelectedMat(MaterialType selectedMat);
+
 private:
 
     Grid* grid = new Grid();
 
-    
+    static sf::RectangleShape m_selectedMatShape;
 
     static std::random_device rd;
     static std::mt19937 gen;

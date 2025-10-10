@@ -56,28 +56,25 @@ void Grid::update(const sf::Int32 deltaMS)
 	if (m_leftMouseHeld)
 	{
 		m_mousePos = sf::Mouse::getPosition();
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
+		if (m_selectedMaterial == MaterialType::None)
 		{
-			Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
-			if (m_selectedMaterial == MaterialType::None)
+			if (block->getMatType() != MaterialType::None)
 			{
-				if (block->getMatType() != MaterialType::None)
+				block->setMatType(m_selectedMaterial);
+				auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), block);
+				if (it != m_activeGrid.end())
 				{
-					block->setMatType(m_selectedMaterial);
-					auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), block);
-					if (it != m_activeGrid.end())
-					{
-						m_activeGrid.erase(it);
-					}
+					m_activeGrid.erase(it);
 				}
 			}
-			else
+		}
+		else
+		{
+			if (block->getMatType() == MaterialType::None)
 			{
-				if (block->getMatType() == MaterialType::None)
-				{
-					block->setMatType(m_selectedMaterial);
-					m_activeGrid.push_back(block);
-				}
+				block->setMatType(m_selectedMaterial);
+				m_activeGrid.push_back(block);
 			}
 		}
 	}
@@ -131,6 +128,7 @@ void Grid::inputEvent(const sf::Event& event)
 				}
 			}
 			m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
+			Game::changeSelectedMat(m_selectedMaterial);
 		}
 	}
 
