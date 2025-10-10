@@ -22,6 +22,8 @@ public:
 
 private:
 
+	sf::Vector2i m_mousePos;
+
 	float m_moveTimer = 0.f;
 
 	void move(int i, int j);

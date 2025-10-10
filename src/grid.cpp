@@ -37,12 +37,12 @@ void Grid::init(sf::VideoMode videoMode)
 void Grid::update(const sf::Int32 deltaMS)
 {
 	// INPUT
-	
+	m_mousePos = sf::Mouse::getPosition();
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		if (m_grid[sf::Mouse::getPosition().y / CELL_SIZE][sf::Mouse::getPosition().x / 10]->getMatType() == MaterialType::None)
+		if (m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE]->getMatType() == MaterialType::None)
 		{
-			m_grid[sf::Mouse::getPosition().y / CELL_SIZE][sf::Mouse::getPosition().x / 10]->setMatType(MaterialType::Sand);
+			m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE]->setMatType(MaterialType::Sand);
 		}
 	}
 
