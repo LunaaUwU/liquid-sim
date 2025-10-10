@@ -100,7 +100,10 @@ void Grid::render(sf::RenderWindow& window) const
 {
 	for (int i = 0; i < m_rows; ++i) {
 		for (int j = 0; j < m_columns; ++j) {
-			m_grid[i][j]->render(window);
+			if (m_grid[i][j]->getMatType() != MaterialType::None)
+			{
+				m_grid[i][j]->render(window);
+			}
 		}
 	}
 }

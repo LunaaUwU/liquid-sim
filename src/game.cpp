@@ -9,7 +9,7 @@ void Game::init(sf::VideoMode videoMode)
 {
     m_selectedMatShape.setSize(sf::Vector2f(30.f, 30.f));
     m_selectedMatShape.setPosition(sf::Vector2f(20.f, videoMode.height - 20.f - 30.f));
-    m_selectedMatShape.setFillColor(sf::Color(0, 0, 0));
+    m_selectedMatShape.setFillColor(sf::Color(0, 0, 0, 0));
     grid->init(videoMode);
 }
 

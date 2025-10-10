@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "game.h"
+#include <iostream>
 
 int main()
 {
@@ -9,12 +10,19 @@ int main()
     sf::Clock deltaClock;
     sf::Time elapsed;
 
+    sf::Clock clock;
+    float fps = 0.f;
+
     Game* game = new Game();
 
     game->init(videoMode);
 
     while (window.isOpen())
     {
+
+        sf::Time elapsed = clock.restart(); // time since last frame
+        fps = 1.f / elapsed.asSeconds();    // FPS = 1 / frame time
+
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
             if (event.type == sf::Event::Closed)
@@ -34,6 +42,8 @@ int main()
             }
             game->update(elapsed.asMilliseconds());
             game->render(window);
+
+            std::cout << "FPS: " << fps << "\r"; // '\r' overwrites the same line
         }
     }
 
