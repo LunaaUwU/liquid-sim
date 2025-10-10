@@ -114,7 +114,7 @@ void Grid::inputEvent(const sf::Event& event)
 	{
 		if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
 		{
-			if (event.mouseWheelScroll.delta > 0)
+			if (event.mouseWheelScroll.delta < 0)
 			{
 				m_selectedMaterialIndex++;
 				if (m_selectedMaterialIndex >= m_materialList.size())
@@ -122,7 +122,7 @@ void Grid::inputEvent(const sf::Event& event)
 					m_selectedMaterialIndex = 0;
 				}
 			}
-			else if (event.mouseWheelScroll.delta < 0)
+			else if (event.mouseWheelScroll.delta > 0)
 			{
 				m_selectedMaterialIndex--;
 				if (m_selectedMaterialIndex < 0)
@@ -236,6 +236,163 @@ void Grid::move(int i, int j)
 				}
 				m_activeGrid.push_back(m_grid[i + 1][j]);
 			}
+			break;
+		}
+		case MaterialType::Water:
+		{
+			if (m_grid[i + 1][j]->getMatType() == MaterialType::None)
+			{
+				m_grid[i][j]->setMatType(MaterialType::None);
+				m_grid[i + 1][j]->setMatType(oldMat);
+				auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+				if (it != m_activeGrid.end())
+				{
+					m_activeGrid.erase(it);
+				}
+				m_activeGrid.push_back(m_grid[i + 1][j]);
+			}
+			else
+			{
+				if (m_grid[i][j]->getWaterMoveDir() == 0)
+				{
+					if (Game::randomInt(0, 1) == 0)
+					{
+						m_grid[i][j]->setWaterMoveDir(1);
+					}
+					else
+					{
+						m_grid[i][j]->setWaterMoveDir(2);
+					}
+				}
+
+				if (m_grid[i][j]->getWaterMoveDir() == 1)
+				{
+					if (m_grid[i][j - 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i][j - 1]->setMatType(oldMat);
+						m_grid[i][j]->setWaterMoveDir(0);
+						m_grid[i][j - 1]->setWaterMoveDir(1);
+						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+						if (it != m_activeGrid.end())
+						{
+							m_activeGrid.erase(it);
+						}
+						m_activeGrid.push_back(m_grid[i][j - 1]);
+					}
+					else if (m_grid[i][j + 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i][j + 1]->setMatType(oldMat);
+						m_grid[i][j]->setWaterMoveDir(0);
+						m_grid[i][j + 1]->setWaterMoveDir(2);
+						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+						if (it != m_activeGrid.end())
+						{
+							m_activeGrid.erase(it);
+						}
+						m_activeGrid.push_back(m_grid[i][j + 1]);
+					}
+				}
+				else if(m_grid[i][j]->getWaterMoveDir() == 2)
+				{
+					if (m_grid[i][j + 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i][j + 1]->setMatType(oldMat);
+						m_grid[i][j]->setWaterMoveDir(0);
+						m_grid[i][j + 1]->setWaterMoveDir(2);
+						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+						if (it != m_activeGrid.end())
+						{
+							m_activeGrid.erase(it);
+						}
+						m_activeGrid.push_back(m_grid[i][j + 1]);
+					}
+					else if (m_grid[i][j - 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i][j - 1]->setMatType(oldMat);
+						m_grid[i][j]->setWaterMoveDir(0);
+						m_grid[i][j - 1]->setWaterMoveDir(1);
+						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+						if (it != m_activeGrid.end())
+						{
+							m_activeGrid.erase(it);
+						}
+						m_activeGrid.push_back(m_grid[i][j - 1]);
+					}
+				}
+			}
+			break;
+		}
+		case MaterialType::Steam:
+		{
+			if (m_grid[i - 1][j]->getMatType() == MaterialType::None)
+			{
+				m_grid[i][j]->setMatType(MaterialType::None);
+				m_grid[i - 1][j]->setMatType(oldMat);
+				auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+				if (it != m_activeGrid.end())
+				{
+					m_activeGrid.erase(it);
+				}
+				m_activeGrid.push_back(m_grid[i - 1][j]);
+			}
+			else
+			{
+				if (Game::randomInt(0, 1) == 0)
+				{
+					if (m_grid[i - 1][j - 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i - 1][j - 1]->setMatType(oldMat);
+						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+						if (it != m_activeGrid.end())
+						{
+							m_activeGrid.erase(it);
+						}
+						m_activeGrid.push_back(m_grid[i - 1][j - 1]);
+					}
+					else if (m_grid[i - 1][j + 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i - 1][j + 1]->setMatType(oldMat);
+						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+						if (it != m_activeGrid.end())
+						{
+							m_activeGrid.erase(it);
+						}
+						m_activeGrid.push_back(m_grid[i - 1][j + 1]);
+					}
+				}
+				else
+				{
+					if (m_grid[i - 1][j + 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i - 1][j + 1]->setMatType(oldMat);
+						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+						if (it != m_activeGrid.end())
+						{
+							m_activeGrid.erase(it);
+						}
+						m_activeGrid.push_back(m_grid[i - 1][j + 1]);
+					}
+					else if (m_grid[i - 1][j - 1]->getMatType() == MaterialType::None)
+					{
+						m_grid[i][j]->setMatType(MaterialType::None);
+						m_grid[i - 1][j - 1]->setMatType(oldMat);
+						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+						if (it != m_activeGrid.end())
+						{
+							m_activeGrid.erase(it);
+						}
+						m_activeGrid.push_back(m_grid[i - 1][j - 1]);
+					}
+				}
+			}
+			break;
 		}
 	}
 }

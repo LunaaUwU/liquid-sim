@@ -46,6 +46,16 @@ public:
         return gridJ;
     }
 
+    int getWaterMoveDir()
+    {
+        return m_waterMoveDirection;
+    }
+
+    void setWaterMoveDir(int waterMoveDir)
+    {
+        m_waterMoveDirection = waterMoveDir;
+    }
+
 private:
 
     bool m_moved = false;
@@ -56,4 +66,7 @@ private:
     sf::RectangleShape shape;
 
     MaterialType m_materialType;
+
+
+    int m_waterMoveDirection = 0; // temp, 0 is not moving, 1 is left, 2 is right
 };
