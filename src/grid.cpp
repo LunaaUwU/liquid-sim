@@ -36,30 +36,36 @@ void Grid::init(sf::VideoMode videoMode)
 		posY += CELL_SIZE;
 		posX = 0.f;
 	}
+
+	int numMaterials = static_cast<int>(MaterialType::Count);
+	for (int i = 0; i < numMaterials; i++)
+	{
+		m_materialList.push_back(static_cast<MaterialType>(i));
+	}
 }
 
 void Grid::update(const sf::Int32 deltaMS)
 {
-	// INPUT
-	m_mousePos = sf::Mouse::getPosition();
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		if (m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE]->getMatType() == MaterialType::None)
-		{
-			m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE]->setMatType(MaterialType::Sand);
-			m_activeGrid.push_back(m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE]);
-		}
-	}
-
-	// MOVEMENT
 	m_moveTimer += deltaMS;
 	if (m_moveTimer >= Game::MOVE_INTERVAL)
 	{
+		// INPUT
+		m_mousePos = sf::Mouse::getPosition();
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE]->getMatType() == MaterialType::None)
+			{
+				m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE]->setMatType(MaterialType::Sand);
+				m_activeGrid.push_back(m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE]);
+			}
+		}
+
+		// MOVEMENT
 		// sorting
 		std::sort(m_activeGrid.begin(), m_activeGrid.end(),
 			[](Block* a, Block* b)
 			{
-				return a->getPos().y > b->getPos().y; // bottom to top
+				return a->getPos().y < b->getPos().y; // bottom to top
 			});
 		m_moveTimer = 0;
 		for (int i = m_activeGrid.size() - 1; i >= 0; i--)

@@ -6,5 +6,6 @@ enum class MaterialType {
     Sand,
     Stone,
     Metal,
-    Ground
+    Ground,
+    Count // To make it possible to get the length of the enum
 };

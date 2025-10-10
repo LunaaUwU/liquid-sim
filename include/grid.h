@@ -34,4 +34,5 @@ private:
 
 	std::vector<Block*> m_activeGrid;
 
+	std::vector<MaterialType> m_materialList;
 };
