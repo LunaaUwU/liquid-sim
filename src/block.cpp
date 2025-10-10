@@ -1,11 +1,13 @@
 #include "block.h"
 #include "grid.h"
 
-void Block::init(MaterialType materialType, int posX, int posY)
+void Block::init(MaterialType materialType, int posX, int posY, int i, int j)
 {
 	setMatType(materialType);
 	shape.setSize(sf::Vector2f(Grid::CELL_SIZE, Grid::CELL_SIZE));
 	shape.setPosition(posX, posY);
+	gridI = i;
+	gridJ = j;
 }
 
 void Block::render(sf::RenderWindow& window) const

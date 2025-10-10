@@ -32,4 +32,6 @@ private:
 
 	std::vector<std::vector<Block*>> m_grid;
 
+	std::vector<Block*> m_activeGrid;
+
 };

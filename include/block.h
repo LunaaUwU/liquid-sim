@@ -10,7 +10,7 @@ class Block
 {
 public:
 
-    void init(MaterialType materialType, int posX, int posY);
+    void init(MaterialType materialType, int posX, int posY, int i, int j);
 
     void render(sf::RenderWindow& window) const;
 
@@ -31,9 +31,27 @@ public:
         m_moved = moved;
     }
 
+    sf::Vector2f getPos()
+    {
+        return shape.getPosition();
+    }
+
+    int getGridI()
+    {
+        return gridI;
+    }
+
+    int getGridJ()
+    {
+        return gridJ;
+    }
+
 private:
 
     bool m_moved = false;
+
+    int gridI;
+    int gridJ;
 
     sf::RectangleShape shape;
 
