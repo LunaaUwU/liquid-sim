@@ -241,10 +241,12 @@ void Grid::move(int i, int j)
 		}
 		case MaterialType::Water:
 		{
-			if (m_grid[i + 1][j]->getMatType() == MaterialType::None)
+			if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::None)
 			{
 				m_grid[i][j]->setMatType(MaterialType::None);
 				m_grid[i + 1][j]->setMatType(oldMat);
+				m_grid[i][j]->setWaterMoveDir(0);
+				m_grid[i + 1][j]->setWaterMoveDir(0);
 				auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
 				if (it != m_activeGrid.end())
 				{
@@ -256,73 +258,86 @@ void Grid::move(int i, int j)
 			{
 				if (m_grid[i][j]->getWaterMoveDir() == 0)
 				{
-					if (Game::randomInt(0, 1) == 0)
+					int leftDropDist = INT_MAX;
+					int rightDropDist = INT_MAX;
+
+					// check left direction for a drop
+					for (int k = j - 1; k >= 0; k--)
 					{
-						m_grid[i][j]->setWaterMoveDir(1);
+						if (!isInsideGrid(i, k)) break;
+						// find the first spot where water could fall down
+						if (isInsideGrid(i + 1, k) && m_grid[i + 1][k]->getMatType() == MaterialType::None)
+						{
+							leftDropDist = j - k;
+							break;
+						}
+						// stop if it hits a wall
+						if (m_grid[i][k]->getMatType() != MaterialType::None)
+							break;
+					}
+
+					// check right direction for a drop
+					for (int k = j + 1; k < m_columns; k++)
+					{
+						if (!isInsideGrid(i, k)) break;
+						if (isInsideGrid(i + 1, k) && m_grid[i + 1][k]->getMatType() == MaterialType::None)
+						{
+							rightDropDist = k - j;
+							break;
+						}
+						// stop if it hits a wall
+						if (m_grid[i][k]->getMatType() != MaterialType::None)
+							break;
+					}
+
+					// move toward the nearest drop
+					if (leftDropDist < rightDropDist && leftDropDist != INT_MAX)
+					{
+						m_grid[i][j]->setWaterMoveDir(1); // left
+					}
+					else if (rightDropDist < leftDropDist && rightDropDist != INT_MAX)
+					{
+						m_grid[i][j]->setWaterMoveDir(2); // right
 					}
 					else
 					{
-						m_grid[i][j]->setWaterMoveDir(2);
-					}
-				}
+						// random
+						bool canMoveLeft = isInsideGrid(i, j - 1) && m_grid[i][j - 1]->getMatType() == MaterialType::None;
+						bool canMoveRight = isInsideGrid(i, j + 1) && m_grid[i][j + 1]->getMatType() == MaterialType::None;
 
-				if (m_grid[i][j]->getWaterMoveDir() == 1)
-				{
-					if (m_grid[i][j - 1]->getMatType() == MaterialType::None)
-					{
-						m_grid[i][j]->setMatType(MaterialType::None);
-						m_grid[i][j - 1]->setMatType(oldMat);
-						m_grid[i][j]->setWaterMoveDir(0);
-						m_grid[i][j - 1]->setWaterMoveDir(1);
-						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
-						if (it != m_activeGrid.end())
-						{
-							m_activeGrid.erase(it);
-						}
-						m_activeGrid.push_back(m_grid[i][j - 1]);
-					}
-					else if (m_grid[i][j + 1]->getMatType() == MaterialType::None)
-					{
-						m_grid[i][j]->setMatType(MaterialType::None);
-						m_grid[i][j + 1]->setMatType(oldMat);
-						m_grid[i][j]->setWaterMoveDir(0);
-						m_grid[i][j + 1]->setWaterMoveDir(2);
-						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
-						if (it != m_activeGrid.end())
-						{
-							m_activeGrid.erase(it);
-						}
-						m_activeGrid.push_back(m_grid[i][j + 1]);
+						if (canMoveLeft && canMoveRight)
+							m_grid[i][j]->setWaterMoveDir(Game::randomInt(1, 2));
+						else if (canMoveLeft)
+							m_grid[i][j]->setWaterMoveDir(1);
+						else if (canMoveRight)
+							m_grid[i][j]->setWaterMoveDir(2);
 					}
 				}
-				else if(m_grid[i][j]->getWaterMoveDir() == 2)
+				if (m_grid[i][j]->getWaterMoveDir() == 1 && isInsideGrid(i, j - 1) && m_grid[i][j - 1]->getMatType() == MaterialType::None)
 				{
-					if (m_grid[i][j + 1]->getMatType() == MaterialType::None)
+					m_grid[i][j]->setMatType(MaterialType::None);
+					m_grid[i][j - 1]->setMatType(oldMat);
+					m_grid[i][j]->setWaterMoveDir(0);
+					m_grid[i][j - 1]->setWaterMoveDir(1);
+					auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+					if (it != m_activeGrid.end())
 					{
-						m_grid[i][j]->setMatType(MaterialType::None);
-						m_grid[i][j + 1]->setMatType(oldMat);
-						m_grid[i][j]->setWaterMoveDir(0);
-						m_grid[i][j + 1]->setWaterMoveDir(2);
-						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
-						if (it != m_activeGrid.end())
-						{
-							m_activeGrid.erase(it);
-						}
-						m_activeGrid.push_back(m_grid[i][j + 1]);
+						m_activeGrid.erase(it);
 					}
-					else if (m_grid[i][j - 1]->getMatType() == MaterialType::None)
+					m_activeGrid.push_back(m_grid[i][j - 1]);
+				}
+				if (m_grid[i][j]->getWaterMoveDir() == 2 && isInsideGrid(i, j + 1) && m_grid[i][j + 1]->getMatType() == MaterialType::None)
+				{
+					m_grid[i][j]->setMatType(MaterialType::None);
+					m_grid[i][j + 1]->setMatType(oldMat);
+					m_grid[i][j]->setWaterMoveDir(0);
+					m_grid[i][j + 1]->setWaterMoveDir(2);
+					auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
+					if (it != m_activeGrid.end())
 					{
-						m_grid[i][j]->setMatType(MaterialType::None);
-						m_grid[i][j - 1]->setMatType(oldMat);
-						m_grid[i][j]->setWaterMoveDir(0);
-						m_grid[i][j - 1]->setWaterMoveDir(1);
-						auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
-						if (it != m_activeGrid.end())
-						{
-							m_activeGrid.erase(it);
-						}
-						m_activeGrid.push_back(m_grid[i][j - 1]);
+						m_activeGrid.erase(it);
 					}
+					m_activeGrid.push_back(m_grid[i][j + 1]);
 				}
 			}
 			break;
@@ -396,4 +411,9 @@ void Grid::move(int i, int j)
 			break;
 		}
 	}
+}
+
+bool Grid::isInsideGrid(int i, int j) const
+{
+	return i >= 0 && i < m_rows && j >= 0 && j < m_columns;
 }

@@ -24,11 +24,14 @@ public:
 
 private:
 
+	void move(int i, int j);
+
+	bool isInsideGrid(int i, int j) const;
+
 	sf::Vector2i m_mousePos;
 
 	float m_moveTimer = 0.f;
 
-	void move(int i, int j);
 	int m_rows;
 	int m_columns;
 
