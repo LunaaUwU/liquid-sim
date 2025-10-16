@@ -4,15 +4,15 @@
 void Block::init(MaterialType materialType, int posX, int posY, int i, int j)
 {
 	setMatType(materialType);
-	shape.setSize(sf::Vector2f(Grid::CELL_SIZE, Grid::CELL_SIZE));
-	shape.setPosition(posX, posY);
+	m_shape.setSize(sf::Vector2f(Grid::CELL_SIZE, Grid::CELL_SIZE));
+	m_shape.setPosition(posX, posY);
 	gridI = i;
 	gridJ = j;
 }
 
 void Block::render(sf::RenderWindow& window) const
 {
-	window.draw(shape);
+	window.draw(m_shape);
 }
 
 void Block::setMatType(MaterialType type)
@@ -22,37 +22,37 @@ void Block::setMatType(MaterialType type)
 	{
 		case MaterialType::Sand:
 		{
-			shape.setFillColor(sf::Color(255, 255, 0));
+			m_shape.setFillColor(sf::Color(255, 255, 0));
 			break;
 		}
 		case MaterialType::Water:
 		{
-			shape.setFillColor(sf::Color(0, 0, 255));
+			m_shape.setFillColor(sf::Color(0, 0, 255));
 			break;
 		}
 		case MaterialType::Stone:
 		{
-			shape.setFillColor(sf::Color(135, 135, 135));
+			m_shape.setFillColor(sf::Color(135, 135, 135));
 			break;
 		}
 		case MaterialType::Metal:
 		{
-			shape.setFillColor(sf::Color(55, 55, 55));
+			m_shape.setFillColor(sf::Color(55, 55, 55));
 			break;
 		}
 		case MaterialType::Steam:
 		{
-			shape.setFillColor(sf::Color(215, 215, 215));
+			m_shape.setFillColor(sf::Color(215, 215, 215));
 			break;
 		}
 		case MaterialType::Ground:
 		{
-			shape.setFillColor(sf::Color(73, 29, 0));
+			m_shape.setFillColor(sf::Color(73, 29, 0));
 			break;
 		}
 		default:
 		{
-			shape.setFillColor(sf::Color(0, 0, 0, 0));
+			m_shape.setFillColor(sf::Color(0, 0, 0, 0));
 		}
 	}
 }

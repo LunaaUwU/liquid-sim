@@ -33,7 +33,7 @@ public:
 
     sf::Vector2f getPos()
     {
-        return shape.getPosition();
+        return m_shape.getPosition();
     }
 
     int getGridI()
@@ -56,6 +56,26 @@ public:
         m_moveDirection = waterMoveDir;
     }
 
+    bool getIsSpawner()
+    {
+        return m_isSpawner;
+    }
+
+    void setIsSpawner(bool value)
+    {
+        m_isSpawner = value;
+        if (value)
+        {
+            m_shape.setOutlineColor(sf::Color(255, 255, 255));
+            m_shape.setOutlineThickness(2.f);
+        }
+        else
+        {
+            m_shape.setOutlineColor(sf::Color(0, 0, 0));
+            m_shape.setOutlineThickness(0.f);
+        }
+    }
+
 private:
 
     bool m_moved = false;
@@ -63,10 +83,11 @@ private:
     int gridI;
     int gridJ;
 
-    sf::RectangleShape shape;
+    sf::RectangleShape m_shape;
 
     MaterialType m_materialType;
 
+    bool m_isSpawner = false;
 
     int m_moveDirection = 0; // temp, 0 is not moving, 1 is left, 2 is right
 };

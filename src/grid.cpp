@@ -78,6 +78,31 @@ void Grid::update(const sf::Int32 deltaMS)
 			}
 		}
 	}
+	if (m_rightMouseHeld)
+	{
+		m_mousePos = sf::Mouse::getPosition();
+		Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
+		if (m_selectedMaterial == MaterialType::None)
+		{
+			if (block->getMatType() != MaterialType::None)
+			{
+				block->setMatType(m_selectedMaterial);
+				auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), block);
+				if (it != m_activeGrid.end())
+				{
+					m_activeGrid.erase(it);
+				}
+			}
+		}
+		else
+		{
+			if (block->getMatType() == MaterialType::None)
+			{
+				block->setMatType(m_selectedMaterial);
+				block->setIsSpawner(true);
+			}
+		}
+	}
 	m_moveTimer += deltaMS;
 	if (m_moveTimer >= Game::MOVE_INTERVAL)
 	{
@@ -147,6 +172,20 @@ void Grid::inputEvent(const sf::Event& event)
 		if (event.mouseButton.button == sf::Mouse::Left)
 		{
 			m_leftMouseHeld = false;
+		}
+	}
+	if (event.type == sf::Event::MouseButtonPressed)
+	{
+		if (event.mouseButton.button == sf::Mouse::Right)
+		{
+			m_rightMouseHeld = true;
+		}
+	}
+	else if (event.type == sf::Event::MouseButtonReleased)
+	{
+		if (event.mouseButton.button == sf::Mouse::Right)
+		{
+			m_rightMouseHeld = false;
 		}
 	}
 }

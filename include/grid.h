@@ -44,4 +44,5 @@ private:
 	int m_selectedMaterialIndex;
 
 	bool m_leftMouseHeld = false;
+	bool m_rightMouseHeld = false;
 };
