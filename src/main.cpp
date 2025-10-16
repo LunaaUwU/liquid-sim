@@ -20,8 +20,8 @@ int main()
     while (window.isOpen())
     {
 
-        sf::Time elapsed = clock.restart(); // time since last frame
-        fps = 1.f / elapsed.asSeconds();    // FPS = 1 / frame time
+        sf::Time elapsed = clock.restart();
+        fps = 1.f / elapsed.asSeconds();
 
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
@@ -42,8 +42,6 @@ int main()
             }
             game->update(elapsed.asMilliseconds());
             game->render(window);
-
-            std::cout << "FPS: " << fps << "\r"; // '\r' overwrites the same line
         }
     }
 

@@ -46,14 +46,14 @@ public:
         return gridJ;
     }
 
-    int getWaterMoveDir()
+    int getMoveDir()
     {
-        return m_waterMoveDirection;
+        return m_moveDirection;
     }
 
-    void setWaterMoveDir(int waterMoveDir)
+    void setMoveDir(int waterMoveDir)
     {
-        m_waterMoveDirection = waterMoveDir;
+        m_moveDirection = waterMoveDir;
     }
 
 private:
@@ -68,5 +68,5 @@ private:
     MaterialType m_materialType;
 
 
-    int m_waterMoveDirection = 0; // temp, 0 is not moving, 1 is left, 2 is right
+    int m_moveDirection = 0; // temp, 0 is not moving, 1 is left, 2 is right
 };
