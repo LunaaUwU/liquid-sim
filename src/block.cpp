@@ -50,6 +50,11 @@ void Block::setMatType(MaterialType type)
 			m_shape.setFillColor(sf::Color(73, 29, 0));
 			break;
 		}
+		case MaterialType::Lava:
+		{
+			m_shape.setFillColor(sf::Color(255, 88, 0));
+			break;
+		}
 		default:
 		{
 			m_shape.setFillColor(sf::Color(0, 0, 0, 0));

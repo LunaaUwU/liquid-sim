@@ -8,5 +8,6 @@ enum class MaterialType {
     Metal,
     Steam,
     Ground,
+    Lava,
     Count // To make it possible to get the length of the enum
 };

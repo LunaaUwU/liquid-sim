@@ -84,6 +84,11 @@ void Game::changeSelectedMat(MaterialType selectedMat)
 			m_selectedMatShape.setFillColor(sf::Color(73, 29, 0));
 			break;
 		}
+		case MaterialType::Lava:
+		{
+			m_selectedMatShape.setFillColor(sf::Color(255, 88, 0));
+			break;
+		}
 		default:
 		{
 			m_selectedMatShape.setFillColor(sf::Color(0, 0, 0, 0));
