@@ -100,6 +100,7 @@ void Grid::update(const sf::Int32 deltaMS)
 			{
 				block->setMatType(m_selectedMaterial);
 				block->setIsSpawner(true);
+				m_activeGrid.push_back(block);
 			}
 		}
 	}
@@ -113,10 +114,21 @@ void Grid::update(const sf::Int32 deltaMS)
 			{
 				return a->getPos().y < b->getPos().y; // bottom to top
 			});
-		// movint
 		for (int i = m_activeGrid.size() - 1; i >= 0; i--)
 		{
-			move(m_activeGrid[i]->getGridI(), m_activeGrid[i]->getGridJ());
+			if (!m_activeGrid[i]->getIsSpawner())
+				move(m_activeGrid[i]->getGridI(), m_activeGrid[i]->getGridJ());
+			else
+			{
+				int spawnI = m_activeGrid[i]->getGridI() + 1;
+				int spawnJ = m_activeGrid[i]->getGridJ();
+				if (isInsideGrid(spawnI, spawnJ) && m_grid[spawnI][spawnJ]->getMatType() == MaterialType::None)
+				{
+					Block* target = m_grid[spawnI][spawnJ];
+					target->setMatType(m_activeGrid[i]->getMatType());
+					m_activeGrid.push_back(target);
+				}
+			}
 		}
 	}
 }
@@ -133,61 +145,11 @@ void Grid::render(sf::RenderWindow& window) const
 	}
 }
 
-void Grid::inputEvent(const sf::Event& event)
+void Grid::spawnBlock(Block* block)
 {
-	if (event.type == sf::Event::MouseWheelScrolled)
-	{
-		if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
-		{
-			if (event.mouseWheelScroll.delta < 0)
-			{
-				m_selectedMaterialIndex++;
-				if (m_selectedMaterialIndex >= m_materialList.size())
-				{
-					m_selectedMaterialIndex = 0;
-				}
-			}
-			else if (event.mouseWheelScroll.delta > 0)
-			{
-				m_selectedMaterialIndex--;
-				if (m_selectedMaterialIndex < 0)
-				{
-					m_selectedMaterialIndex = m_materialList.size() - 1;
-				}
-			}
-			m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
-			Game::changeSelectedMat(m_selectedMaterial);
-		}
-	}
-
-	if (event.type == sf::Event::MouseButtonPressed)
-	{
-		if (event.mouseButton.button == sf::Mouse::Left)
-		{
-			m_leftMouseHeld = true;
-		}
-	}
-	else if (event.type == sf::Event::MouseButtonReleased)
-	{
-		if (event.mouseButton.button == sf::Mouse::Left)
-		{
-			m_leftMouseHeld = false;
-		}
-	}
-	if (event.type == sf::Event::MouseButtonPressed)
-	{
-		if (event.mouseButton.button == sf::Mouse::Right)
-		{
-			m_rightMouseHeld = true;
-		}
-	}
-	else if (event.type == sf::Event::MouseButtonReleased)
-	{
-		if (event.mouseButton.button == sf::Mouse::Right)
-		{
-			m_rightMouseHeld = false;
-		}
-	}
+	block->setMatType(m_selectedMaterial);
+	block->setIsSpawner(true);
+	m_activeGrid.push_back(block);
 }
 
 void Grid::move(int i, int j)
@@ -490,4 +452,61 @@ void Grid::move(int i, int j)
 bool Grid::isInsideGrid(int i, int j) const
 {
 	return i >= 0 && i < m_rows && j >= 0 && j < m_columns;
+}
+
+void Grid::inputEvent(const sf::Event& event)
+{
+	if (event.type == sf::Event::MouseWheelScrolled)
+	{
+		if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+		{
+			if (event.mouseWheelScroll.delta < 0)
+			{
+				m_selectedMaterialIndex++;
+				if (m_selectedMaterialIndex >= m_materialList.size())
+				{
+					m_selectedMaterialIndex = 0;
+				}
+			}
+			else if (event.mouseWheelScroll.delta > 0)
+			{
+				m_selectedMaterialIndex--;
+				if (m_selectedMaterialIndex < 0)
+				{
+					m_selectedMaterialIndex = m_materialList.size() - 1;
+				}
+			}
+			m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
+			Game::changeSelectedMat(m_selectedMaterial);
+		}
+	}
+
+	if (event.type == sf::Event::MouseButtonPressed)
+	{
+		if (event.mouseButton.button == sf::Mouse::Left)
+		{
+			m_leftMouseHeld = true;
+		}
+	}
+	else if (event.type == sf::Event::MouseButtonReleased)
+	{
+		if (event.mouseButton.button == sf::Mouse::Left)
+		{
+			m_leftMouseHeld = false;
+		}
+	}
+	if (event.type == sf::Event::MouseButtonPressed)
+	{
+		if (event.mouseButton.button == sf::Mouse::Right)
+		{
+			m_rightMouseHeld = true;
+		}
+	}
+	else if (event.type == sf::Event::MouseButtonReleased)
+	{
+		if (event.mouseButton.button == sf::Mouse::Right)
+		{
+			m_rightMouseHeld = false;
+		}
+	}
 }

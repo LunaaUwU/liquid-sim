@@ -17,8 +17,10 @@ public:
 
 	void render(sf::RenderWindow& window) const;
 
+
 	void inputEvent(const sf::Event& event);
 
+	void spawnBlock(Block* block);
 
 	static constexpr float CELL_SIZE = 10.f;
 
