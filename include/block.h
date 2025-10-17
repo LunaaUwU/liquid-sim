@@ -67,7 +67,7 @@ public:
         if (value)
         {
             m_shape.setOutlineColor(sf::Color(255, 255, 255));
-            m_shape.setOutlineThickness(2.f);
+            m_shape.setOutlineThickness(-2.f);
         }
         else
         {
