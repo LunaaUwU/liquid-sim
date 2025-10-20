@@ -167,6 +167,16 @@ void Grid::move(int i, int j)
 				}
 				m_activeGrid.push_back(m_grid[i + 1][j]);
 			}
+			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Water)
+			{
+				m_grid[i][j]->setMatType(MaterialType::Water);
+				m_grid[i + 1][j]->setMatType(MaterialType::Sand);
+			}
+			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Lava)
+			{
+				m_grid[i][j]->setMatType(MaterialType::Lava);
+				m_grid[i + 1][j]->setMatType(MaterialType::Sand);
+			}
 			else
 			{
 				if (Game::randomInt(0, 1) == 0)
