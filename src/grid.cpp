@@ -192,6 +192,16 @@ void Grid::move(int i, int j)
 						}
 						m_activeGrid.push_back(m_grid[i + 1][j - 1]);
 					}
+					else if (isInsideGrid(i + 1, j - 1) && m_grid[i + 1][j - 1]->getMatType() == MaterialType::Water)
+					{
+						m_grid[i][j]->setMatType(MaterialType::Water);
+						m_grid[i + 1][j - 1]->setMatType(MaterialType::Sand);
+					}
+					else if (isInsideGrid(i + 1, j - 1) && m_grid[i + 1][j - 1]->getMatType() == MaterialType::Lava)
+					{
+						m_grid[i][j]->setMatType(MaterialType::Lava);
+						m_grid[i + 1][j - 1]->setMatType(MaterialType::Sand);
+					}
 					else if(isInsideGrid(i + 1, j + 1) &&m_grid[i + 1][j + 1]->getMatType() == MaterialType::None && isInsideGrid(i, j + 1) && m_grid[i][j + 1]->getMatType() == MaterialType::None)
 					{
 						m_grid[i][j]->setMatType(MaterialType::None);
@@ -202,6 +212,16 @@ void Grid::move(int i, int j)
 							m_activeGrid.erase(it);
 						}
 						m_activeGrid.push_back(m_grid[i + 1][j + 1]);
+					}
+					else if (isInsideGrid(i + 1, j + 1) && m_grid[i + 1][j + 1]->getMatType() == MaterialType::Water)
+					{
+						m_grid[i][j]->setMatType(MaterialType::Water);
+						m_grid[i + 1][j + 1]->setMatType(MaterialType::Sand);
+					}
+					else if (isInsideGrid(i + 1, j + 1) && m_grid[i + 1][j + 1]->getMatType() == MaterialType::Lava)
+					{
+						m_grid[i][j]->setMatType(MaterialType::Lava);
+						m_grid[i + 1][j + 1]->setMatType(MaterialType::Sand);
 					}
 				}
 				else
