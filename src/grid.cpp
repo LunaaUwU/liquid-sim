@@ -252,6 +252,13 @@ void Grid::move(int i, int j)
 				}
 				m_activeGrid.push_back(m_grid[i + 1][j]);
 			}
+			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Lava)
+			{
+				m_grid[i][j]->setMatType(MaterialType::Steam);
+				m_grid[i][j]->setMoveDir(0);
+				m_grid[i + 1][j]->setMatType(MaterialType::Stone);
+				m_grid[i + 1][j]->setMoveDir(0);
+			}
 			else
 			{
 				if (m_grid[i][j]->getMoveDir() == 0)
@@ -324,6 +331,17 @@ void Grid::move(int i, int j)
 					}
 					m_activeGrid.push_back(m_grid[i][j - 1]);
 				}
+				else if (m_grid[i][j]->getMoveDir() == 1 && isInsideGrid(i, j - 1) && m_grid[i][j - 1]->getMatType() == MaterialType::Lava)
+				{
+					m_grid[i][j]->setMatType(MaterialType::Steam);
+					m_grid[i][j]->setMoveDir(0);
+					m_grid[i][j - 1]->setMatType(MaterialType::Stone);
+					m_grid[i][j - 1]->setMoveDir(0);
+				}
+				else
+				{
+					m_grid[i][j]->setMoveDir(2);
+				}
 				if (m_grid[i][j]->getMoveDir() == 2 && isInsideGrid(i, j + 1) && m_grid[i][j + 1]->getMatType() == MaterialType::None)
 				{
 					m_grid[i][j]->setMatType(MaterialType::None);
@@ -336,6 +354,17 @@ void Grid::move(int i, int j)
 						m_activeGrid.erase(it);
 					}
 					m_activeGrid.push_back(m_grid[i][j + 1]);
+				}
+				else if (m_grid[i][j]->getMoveDir() == 2 && isInsideGrid(i, j + 1) && m_grid[i][j + 1]->getMatType() == MaterialType::Lava)
+				{
+					m_grid[i][j]->setMatType(MaterialType::Steam);
+					m_grid[i][j]->setMoveDir(0);
+					m_grid[i][j + 1]->setMatType(MaterialType::Stone);
+					m_grid[i][j + 1]->setMoveDir(0);
+				}
+				else
+				{
+					m_grid[i][j]->setMoveDir(1);
 				}
 			}
 			break;
@@ -427,6 +456,10 @@ void Grid::move(int i, int j)
 					}
 					m_activeGrid.push_back(m_grid[i][j - 1]);
 				}
+				else
+				{
+					m_grid[i][j]->setMoveDir(2);
+				}
 				if (m_grid[i][j]->getMoveDir() == 2 && isInsideGrid(i, j + 1) && m_grid[i][j + 1]->getMatType() == MaterialType::None)
 				{
 					m_grid[i][j]->setMatType(MaterialType::None);
@@ -439,6 +472,10 @@ void Grid::move(int i, int j)
 						m_activeGrid.erase(it);
 					}
 					m_activeGrid.push_back(m_grid[i][j + 1]);
+				}
+				else
+				{
+					m_grid[i][j]->setMoveDir(1);
 				}
 			}
 			break;
@@ -457,6 +494,13 @@ void Grid::move(int i, int j)
 					m_activeGrid.erase(it);
 				}
 				m_activeGrid.push_back(m_grid[i + 1][j]);
+			}
+			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Water)
+			{
+				m_grid[i][j]->setMatType(MaterialType::Steam);
+				m_grid[i][j]->setMoveDir(0);
+				m_grid[i + 1][j]->setMatType(MaterialType::Stone);
+				m_grid[i + 1][j]->setMoveDir(0);
 			}
 			else
 			{
@@ -530,6 +574,17 @@ void Grid::move(int i, int j)
 					}
 					m_activeGrid.push_back(m_grid[i][j - 1]);
 				}
+				else if (m_grid[i][j]->getMoveDir() == 1 && isInsideGrid(i, j - 1) && m_grid[i][j - 1]->getMatType() == MaterialType::Water)
+				{
+					m_grid[i][j]->setMatType(MaterialType::Steam);
+					m_grid[i][j]->setMoveDir(0);
+					m_grid[i][j - 1]->setMatType(MaterialType::Stone);
+					m_grid[i][j - 1]->setMoveDir(0);
+				}
+				else
+				{
+					m_grid[i][j]->setMoveDir(2);
+				}
 				if (m_grid[i][j]->getMoveDir() == 2 && isInsideGrid(i, j + 1) && m_grid[i][j + 1]->getMatType() == MaterialType::None)
 				{
 					m_grid[i][j]->setMatType(MaterialType::None);
@@ -542,6 +597,17 @@ void Grid::move(int i, int j)
 						m_activeGrid.erase(it);
 					}
 					m_activeGrid.push_back(m_grid[i][j + 1]);
+				}
+				else if (m_grid[i][j]->getMoveDir() == 2 && isInsideGrid(i, j + 1) && m_grid[i][j + 1]->getMatType() == MaterialType::Water)
+				{
+					m_grid[i][j]->setMatType(MaterialType::Steam);
+					m_grid[i][j]->setMoveDir(0);
+					m_grid[i][j + 1]->setMatType(MaterialType::Stone);
+					m_grid[i][j + 1]->setMoveDir(0);
+				}
+				else
+				{
+					m_grid[i][j]->setMoveDir(1);
 				}
 			}
 			break;
