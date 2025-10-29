@@ -35,6 +35,11 @@ void Game::restart()
     
 }
 
+void Game::cleanup()
+{
+    m_ui->cleanup();
+}
+
 int Game::randomInt(int min, int max)
 {
     if (min > max)

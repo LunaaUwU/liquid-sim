@@ -22,6 +22,8 @@ public:
 
     void restart();
 
+    void cleanup();
+
 
     static constexpr float MOVE_INTERVAL = 25.f;
 

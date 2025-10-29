@@ -14,10 +14,13 @@ public:
 
 	void render(sf::RenderWindow& window) const;
 
+	void cleanup();
 
 	static void changeSelectedMat(MaterialType selectedMat);
 
 private:
 
 	static sf::RectangleShape m_selectedMatShape;
+	static sf::Text m_selectedMatText;
+	static sf::Font m_selectedMatFont;
 };

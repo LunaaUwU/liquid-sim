@@ -27,6 +27,7 @@ int main()
         {
             if (event.type == sf::Event::Closed)
             {
+                game->cleanup();
                 window.close();
             }
 
@@ -38,6 +39,7 @@ int main()
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
+                game->cleanup();
                 window.close();
             }
             game->update(elapsed.asMilliseconds());
