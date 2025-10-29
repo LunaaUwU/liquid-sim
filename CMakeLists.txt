@@ -17,6 +17,7 @@ set(PROJECT_HEADERS
     include/grid.h
     include/block.h
     include/material-type.h
+    include/ui.h
 )
 
 set(PROJECT_SOURCES 
@@ -24,6 +25,7 @@ set(PROJECT_SOURCES
     src/game.cpp
     src/grid.cpp
     src/block.cpp
+    src/ui.cpp
 )
 
 set(PROJECT_FILES 

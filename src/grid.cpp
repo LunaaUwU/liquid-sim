@@ -49,7 +49,7 @@ void Grid::init(sf::VideoMode videoMode)
 	}
 	m_selectedMaterialIndex = 0;
 	m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
-	Game::changeSelectedMat(m_selectedMaterial);
+	UI::changeSelectedMat(m_selectedMaterial);
 }
 
 void Grid::update(const sf::Int32 deltaMS)
@@ -679,7 +679,7 @@ void Grid::inputEvent(const sf::Event& event)
 				}
 			}
 			m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
-			Game::changeSelectedMat(m_selectedMaterial);
+			UI::changeSelectedMat(m_selectedMaterial);
 		}
 	}
 
