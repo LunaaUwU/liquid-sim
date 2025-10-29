@@ -28,48 +28,7 @@ void UI::render(sf::RenderWindow& window) const
 
 void UI::changeSelectedMat(MaterialType selectedMat)
 {
-	switch (selectedMat)
-	{
-		case MaterialType::Sand:
-		{
-			m_selectedMatShape.setFillColor(sf::Color(255, 255, 0));
-			break;
-		}
-		case MaterialType::Water:
-		{
-			m_selectedMatShape.setFillColor(sf::Color(0, 0, 255));
-			break;
-		}
-		case MaterialType::Stone:
-		{
-			m_selectedMatShape.setFillColor(sf::Color(135, 135, 135));
-			break;
-		}
-		case MaterialType::Metal:
-		{
-			m_selectedMatShape.setFillColor(sf::Color(55, 55, 55));
-			break;
-		}
-		case MaterialType::Steam:
-		{
-			m_selectedMatShape.setFillColor(sf::Color(215, 215, 215));
-			break;
-		}
-		case MaterialType::Ground:
-		{
-			m_selectedMatShape.setFillColor(sf::Color(73, 29, 0));
-			break;
-		}
-		case MaterialType::Lava:
-		{
-			m_selectedMatShape.setFillColor(sf::Color(255, 88, 0));
-			break;
-		}
-		default:
-		{
-			m_selectedMatShape.setFillColor(sf::Color(0, 0, 0, 0));
-		}
-	}
+	m_selectedMatShape.setFillColor(materialToColor(selectedMat));
 	m_selectedMatText.setString(materialToString(selectedMat));
 }
 

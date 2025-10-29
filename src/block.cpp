@@ -32,7 +32,7 @@ void Block::setMatType(MaterialType type)
 		}
 		case MaterialType::Stone:
 		{
-			m_shape.setFillColor(sf::Color(135, 135, 135));
+			m_shape.setFillColor(sf::Color(115, 115, 115));
 			break;
 		}
 		case MaterialType::Metal:

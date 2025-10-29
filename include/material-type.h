@@ -27,3 +27,18 @@ inline std::string materialToString(MaterialType type)
         default:                   return "Unknown";
     }
 }
+
+inline sf::Color materialToColor(MaterialType type)
+{
+    switch (type)
+    {
+        case MaterialType::Sand:   return sf::Color(255, 255, 0);
+        case MaterialType::Water:  return sf::Color(0, 0, 255);
+        case MaterialType::Stone:  return sf::Color(115, 115, 115);
+        case MaterialType::Metal:  return sf::Color(55, 55, 55);
+        case MaterialType::Steam:  return sf::Color(215, 215, 215);
+        case MaterialType::Ground: return sf::Color(73, 29, 0);
+        case MaterialType::Lava:   return sf::Color(255, 88, 0);
+        default:                   return sf::Color(0, 0, 0, 0);
+    }
+}

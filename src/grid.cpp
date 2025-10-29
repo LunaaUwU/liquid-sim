@@ -407,6 +407,14 @@ void Grid::move(int i, int j)
 		}
 		case MaterialType::Steam:
 		{
+			if (isInsideGrid(i - 1, j) && m_grid[i - 1][j]->getMatType() != MaterialType::None &&
+				isInsideGrid(i, j - 1) && m_grid[i][j - 1]->getMatType() != MaterialType::None &&
+				isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() != MaterialType::None &&
+				isInsideGrid(i, j - 1) && m_grid[i][j - 1]->getMatType() != MaterialType::None)
+			{
+				m_grid[i][j]->setMatType(MaterialType::Water);
+				m_grid[i][j]->setMoveDir(0);
+			}
 			if (isInsideGrid(i - 1, j) && m_grid[i - 1][j]->getMatType() == MaterialType::None)
 			{
 				m_grid[i][j]->setMatType(MaterialType::None);
