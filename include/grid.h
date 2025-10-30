@@ -22,9 +22,20 @@ public:
 
 	void spawnBlock(Block* block);
 
+	void clearBoard();
+
 	static constexpr float CELL_SIZE = 10.f;
 
-	static inline bool isSpawner = false;
+	bool getIsSpawner()
+	{
+		return m_isSpawner;
+	}
+
+	void setIsSpawner(bool isSpawner)
+	{
+		m_isSpawner = isSpawner;
+	}
+
 
 private:
 
@@ -49,4 +60,6 @@ private:
 
 	bool m_leftMouseHeld = false;
 	bool m_rightMouseHeld = false;
+
+	bool m_isSpawner = false;
 };

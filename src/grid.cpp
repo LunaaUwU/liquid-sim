@@ -37,10 +37,12 @@ void Grid::init(sf::VideoMode videoMode)
 			m_grid[i][j] = new Block(); // Create a block for each position
 			if (posY >= videoMode.height - 60)
 			{
+				m_grid[i][j]->setIsStarter(true);
 				type = MaterialType::Ground;
 			}
 			else if (posY == 0 || posX == 0 || posX == videoMode.width - CELL_SIZE)
 			{
+				m_grid[i][j]->setIsStarter(true);
 				type = MaterialType::Metal;
 			}
 			else
@@ -135,6 +137,25 @@ void Grid::spawnBlock(Block* block)
 	block->setMatType(UI::SELECTED_MATERIAL);
 	block->setIsSpawner(true);
 	m_activeGrid.push_back(block);
+}
+
+void Grid::clearBoard()
+{
+	for (int i = m_activeGrid.size() - 1; i >= 0; i--)
+	{
+		if (!m_activeGrid[i]->getIsStarter())
+		{
+			m_activeGrid[i]->setCondensationTimer(0);
+			m_activeGrid[i]->setIsSpawner(false);
+			m_activeGrid[i]->setMatType(MaterialType::None);
+			m_activeGrid[i]->setMoveDir(0);
+		}
+	}
+	m_activeGrid.erase(
+		std::remove_if(m_activeGrid.begin(), m_activeGrid.end(),
+			[](Block* n) { return !n->getIsStarter(); }), // condition
+		m_activeGrid.end()
+	);
 }
 
 void Grid::move(int i, int j)
@@ -667,7 +688,7 @@ void Grid::placeBlock()
 	if (block->getMatType() == MaterialType::None)
 	{
 		block->setMatType(UI::SELECTED_MATERIAL);
-		if (isSpawner)
+		if (m_isSpawner)
 			block->setIsSpawner(true);
 		m_activeGrid.push_back(block);
 	}
@@ -687,25 +708,4 @@ void Grid::removeBlock()
 			m_activeGrid.erase(it);
 		}
 	}
-	/*if (m_selectedMaterial == MaterialType::None)
-	{
-		if (block->getMatType() != MaterialType::None)
-		{
-			block->setMatType(m_selectedMaterial);
-			auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), block);
-			if (it != m_activeGrid.end())
-			{
-				m_activeGrid.erase(it);
-			}
-		}
-	}
-	else
-	{
-		if (block->getMatType() == MaterialType::None)
-		{
-			block->setMatType(m_selectedMaterial);
-			block->setIsSpawner(true);
-			m_activeGrid.push_back(block);
-		}
-	}*/
 }

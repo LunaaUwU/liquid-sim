@@ -21,16 +21,6 @@ public:
 
     void setMatType(MaterialType type);
 
-    bool getMoved()
-    {
-        return m_moved;
-    }
-
-    void setMoved(bool moved)
-    {
-        m_moved = moved;
-    }
-
     sf::Vector2f getPos()
     {
         return m_shape.getPosition();
@@ -86,12 +76,20 @@ public:
         m_condensationTimer = condensationTimer;
     }
 
+    bool getIsStarter()
+    {
+        return m_isStarter;
+    }
+
+    void setIsStarter(bool isStarter)
+    {
+        m_isStarter = isStarter;
+    }
+
     
     static constexpr float CONDENSATION_THRESHOLD = 3000.f;
 
 private:
-
-    bool m_moved = false;
 
     int gridI;
     int gridJ;
@@ -101,6 +99,7 @@ private:
     MaterialType m_materialType;
 
     bool m_isSpawner = false;
+    bool m_isStarter = false;
 
     int m_moveDirection = 0; // temp, 0 is not moving, 1 is left, 2 is right
 

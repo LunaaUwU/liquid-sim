@@ -1,21 +1,20 @@
 #include "ui.h"
-#include "grid.h"
-
-sf::RectangleShape UI::m_selectedMatShape;
-sf::Font UI::m_selectedMatFont;
-sf::Text UI::m_selectedMatText;
-sf::RectangleShape UI::m_spawnerCheckBox;
 
 MaterialType UI::SELECTED_MATERIAL;
 
-void UI::init(sf::VideoMode& videoMode)
+void UI::init(sf::VideoMode& videoMode, Grid* grid)
 {
-
+	m_grid = grid;
 	m_videoMode = videoMode;
 	InputManager::onLeftClick([this]() -> bool {
 		if (m_spawnerCheckBox.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
 		{
 			updateCheckBox();
+			return true;
+		}
+		else if (m_clearButton.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+		{
+			m_grid->clearBoard();
 			return true;
 		}
 		else
@@ -39,13 +38,13 @@ void UI::init(sf::VideoMode& videoMode)
 		return false;
 		});
 
+	m_uiFont.loadFromFile("../assets/fonts/ComicSans.ttf");
+
 	m_selectedMatShape.setSize(sf::Vector2f(30.f, 30.f));
 	m_selectedMatShape.setPosition(sf::Vector2f(20.f, m_videoMode.height - 50.f));
 	m_selectedMatShape.setFillColor(materialToColor(MaterialType::Sand));
 
-	m_selectedMatFont.loadFromFile("../assets/fonts/ComicSans.ttf");
-
-	m_selectedMatText.setFont(m_selectedMatFont);
+	m_selectedMatText.setFont(m_uiFont);
 	m_selectedMatText.setCharacterSize(40);
 	m_selectedMatText.setPosition(sf::Vector2f(60.f, m_videoMode.height - 60.f));
 	m_selectedMatText.setFillColor(sf::Color(255, 255, 255));
@@ -56,6 +55,16 @@ void UI::init(sf::VideoMode& videoMode)
 	m_spawnerCheckBox.setFillColor(sf::Color(255, 255, 255));
 	m_spawnerCheckBox.setOutlineThickness(-2.f);
 	m_spawnerCheckBox.setOutlineColor(sf::Color(0, 0, 0));
+
+	m_clearButton.setSize(sf::Vector2f(30.f, 30.f));
+	m_clearButton.setPosition(sf::Vector2f(m_videoMode.width - 50.f, m_videoMode.height - 50.f));
+	m_clearButton.setFillColor(sf::Color(50, 50, 50));
+
+	m_clearText.setFont(m_uiFont);
+	m_clearText.setCharacterSize(40);
+	m_clearText.setString("Clear Board");
+	m_clearText.setPosition(sf::Vector2f(m_videoMode.width - 70.f - m_clearText.getGlobalBounds().width, m_videoMode.height - 60.f));
+	m_clearText.setFillColor(sf::Color(255, 255, 255));
 	
 	int numMaterials = static_cast<int>(MaterialType::Count);
 	MaterialType material;
@@ -76,6 +85,8 @@ void UI::render(sf::RenderWindow& window) const
 	window.draw(m_selectedMatShape);
 	window.draw(m_selectedMatText);
 	window.draw(m_spawnerCheckBox);
+	window.draw(m_clearButton);
+	window.draw(m_clearText);
 }
 
 void UI::changeSelectedMat(int value)
@@ -95,26 +106,18 @@ void UI::changeSelectedMat(int value)
 	m_spawnerCheckBox.setPosition(sf::Vector2f(75.f + m_selectedMatText.getLocalBounds().width, m_videoMode.height - 50.f));
 }
 
-void UI::cleanup() {
-	// Force destruction before window closes
-	m_selectedMatShape = sf::RectangleShape();
-	m_selectedMatText = sf::Text();
-	m_selectedMatFont = sf::Font();
-	m_spawnerCheckBox = sf::RectangleShape();
-}
-
 void UI::updateCheckBox()
 {
 	if (m_isCheckBoxChecked)
 	{
 		m_isCheckBoxChecked = false;
 		m_spawnerCheckBox.setFillColor(sf::Color(255, 255, 255));
-		Grid::isSpawner = false;
+		m_grid->setIsSpawner(false);
 	}
 	else
 	{
 		m_isCheckBoxChecked = true;
 		m_spawnerCheckBox.setFillColor(sf::Color(0, 0, 0));
-		Grid::isSpawner = true;
+		m_grid->setIsSpawner(true);
 	}
 }

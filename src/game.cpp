@@ -5,7 +5,7 @@ std::mt19937 Game::gen(Game::rd());
 
 void Game::init(sf::VideoMode videoMode)
 {
-    m_ui->init(videoMode);
+    m_ui->init(videoMode, m_grid);
     m_grid->init(videoMode);
 }
 
@@ -37,7 +37,7 @@ void Game::restart()
 
 void Game::cleanup()
 {
-    m_ui->cleanup();
+    
 }
 
 int Game::randomInt(int min, int max)
