@@ -436,7 +436,7 @@ void Grid::move(int i, int j)
 		}
 		case MaterialType::Steam:
 		{
-			if (m_grid[i][j]->getCondensationTimer() >= m_grid[i][j]->CONDENSATION_THRESHOLD)
+			if (m_grid[i][j]->getCondensationTimer() >= Block::CONDENSATION_THRESHOLD)
 			{
 				m_grid[i][j]->setMatType(MaterialType::Water);
 				m_grid[i][j]->setMoveDir(0);
