@@ -10,8 +10,7 @@ MaterialType UI::SELECTED_MATERIAL;
 void UI::init(sf::VideoMode videoMode)
 {
 	InputManager::onLeftClick([this]() -> bool {
-		if (m_selectedMatShape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) ||
-			m_selectedMatText.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+		if (m_spawnerCheckBox.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
 		{
 			return true;
 		}
@@ -20,8 +19,7 @@ void UI::init(sf::VideoMode videoMode)
 		});
 
 	InputManager::onRightClick([this]() -> bool {
-		if (m_selectedMatShape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) ||
-			m_selectedMatText.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+		if (m_spawnerCheckBox.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
 		{
 			return true;
 		}
