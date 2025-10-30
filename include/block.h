@@ -76,6 +76,19 @@ public:
         }
     }
 
+    float getCondensationTimer()
+    {
+        return m_condensationTimer;
+    }
+
+    void setCondensationTimer(float condensationTimer)
+    {
+        m_condensationTimer = condensationTimer;
+    }
+
+    
+    static constexpr float CONDENSATION_THRESHOLD = 3000.f;
+
 private:
 
     bool m_moved = false;
@@ -90,4 +103,6 @@ private:
     bool m_isSpawner = false;
 
     int m_moveDirection = 0; // temp, 0 is not moving, 1 is left, 2 is right
+
+    float m_condensationTimer = 0.f;
 };

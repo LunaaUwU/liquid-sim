@@ -102,6 +102,30 @@ void Grid::update(const sf::Int32 deltaMS)
 		}*/
 	}
 	m_moveTimer += deltaMS;
+	std::sort(m_activeGrid.begin(), m_activeGrid.end(),
+		[](Block* a, Block* b)
+		{
+			return a->getPos().y < b->getPos().y; // bottom to top
+		});
+	for (int i = m_activeGrid.size() - 1; i >= 0; i--)
+	{
+		if (m_activeGrid[i]->getMatType() == MaterialType::Steam &&
+			isInsideGrid(m_activeGrid[i]->getGridI() - 1, m_activeGrid[i]->getGridJ()) &&
+			m_grid[m_activeGrid[i]->getGridI() - 1][m_activeGrid[i]->getGridJ()]->getMatType() != MaterialType::None &&
+			isInsideGrid(m_activeGrid[i]->getGridI(), m_activeGrid[i]->getGridJ() - 1) &&
+			m_grid[m_activeGrid[i]->getGridI()][m_activeGrid[i]->getGridJ() - 1]->getMatType() != MaterialType::None &&
+			isInsideGrid(m_activeGrid[i]->getGridI() + 1, m_activeGrid[i]->getGridJ()) &&
+			m_grid[m_activeGrid[i]->getGridI() + 1][m_activeGrid[i]->getGridJ()]->getMatType() != MaterialType::None &&
+			isInsideGrid(m_activeGrid[i]->getGridI(), m_activeGrid[i]->getGridJ() + 1) &&
+			m_grid[m_activeGrid[i]->getGridI()][m_activeGrid[i]->getGridJ() + 1]->getMatType() != MaterialType::None)
+		{
+			m_activeGrid[i]->setCondensationTimer(m_activeGrid[i]->getCondensationTimer() + deltaMS);
+		}
+		else
+		{
+			m_activeGrid[i]->setCondensationTimer(0);
+		}
+	}
 	if (m_moveTimer >= Game::MOVE_INTERVAL)
 	{
 		m_moveTimer = 0;
@@ -295,6 +319,11 @@ void Grid::move(int i, int j)
 				m_grid[i + 1][j]->setMatType(MaterialType::Stone);
 				m_grid[i + 1][j]->setMoveDir(0);
 			}
+			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Steam)
+			{
+				m_grid[i][j]->setMatType(MaterialType::Steam);
+				m_grid[i + 1][j]->setMatType(MaterialType::Water);
+			}
 			else
 			{
 				if (m_grid[i][j]->getMoveDir() == 0)
@@ -407,13 +436,11 @@ void Grid::move(int i, int j)
 		}
 		case MaterialType::Steam:
 		{
-			if (isInsideGrid(i - 1, j) && m_grid[i - 1][j]->getMatType() != MaterialType::None &&
-				isInsideGrid(i, j - 1) && m_grid[i][j - 1]->getMatType() != MaterialType::None &&
-				isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() != MaterialType::None &&
-				isInsideGrid(i, j - 1) && m_grid[i][j - 1]->getMatType() != MaterialType::None)
+			if (m_grid[i][j]->getCondensationTimer() >= m_grid[i][j]->CONDENSATION_THRESHOLD)
 			{
 				m_grid[i][j]->setMatType(MaterialType::Water);
 				m_grid[i][j]->setMoveDir(0);
+				m_grid[i][j]->setCondensationTimer(0);
 			}
 			if (isInsideGrid(i - 1, j) && m_grid[i - 1][j]->getMatType() == MaterialType::None)
 			{
