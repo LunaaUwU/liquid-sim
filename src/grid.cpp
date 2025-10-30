@@ -683,6 +683,8 @@ bool Grid::isInsideGrid(int i, int j) const
 void Grid::placeBlock()
 {
 	m_mousePos = sf::Mouse::getPosition();
+	if (!isInsideGrid(m_mousePos.y / CELL_SIZE, m_mousePos.x / CELL_SIZE))
+		return;
 	Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
 
 	if (block->getMatType() == MaterialType::None)
@@ -697,6 +699,8 @@ void Grid::placeBlock()
 void Grid::removeBlock()
 {
 	m_mousePos = sf::Mouse::getPosition();
+	if (!isInsideGrid(m_mousePos.y / CELL_SIZE, m_mousePos.x / CELL_SIZE))
+		return;
 	Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
 	if (block->getMatType() != MaterialType::None)
 	{
