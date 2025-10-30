@@ -18,6 +18,7 @@ set(PROJECT_HEADERS
     include/block.h
     include/material-type.h
     include/ui.h
+    include/input-manager.h
 )
 
 set(PROJECT_SOURCES 
@@ -26,6 +27,7 @@ set(PROJECT_SOURCES
     src/grid.cpp
     src/block.cpp
     src/ui.cpp
+    src/input-manager.cpp
 )
 
 set(PROJECT_FILES 

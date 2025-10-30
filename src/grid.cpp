@@ -54,7 +54,7 @@ void Grid::init(sf::VideoMode videoMode)
 
 void Grid::update(const sf::Int32 deltaMS)
 {
-	if (m_leftMouseHeld)
+	if (InputManager::LEFT_MOUSE_HELD)
 	{
 		m_mousePos = sf::Mouse::getPosition();
 		Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
@@ -65,7 +65,7 @@ void Grid::update(const sf::Int32 deltaMS)
 			m_activeGrid.push_back(block);
 		}
 	}
-	if (m_rightMouseHeld)
+	if (InputManager::RIGHT_MOUSE_HELD)
 	{
 		m_mousePos = sf::Mouse::getPosition();
 		Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
@@ -715,29 +715,6 @@ void Grid::inputEvent(const sf::Event& event)
 			}
 			m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
 			UI::changeSelectedMat(m_selectedMaterial);
-		}
-	}
-
-	if (event.type == sf::Event::MouseButtonPressed)
-	{
-		if (event.mouseButton.button == sf::Mouse::Left)
-		{
-			m_leftMouseHeld = true;
-		}
-		if (event.mouseButton.button == sf::Mouse::Right)
-		{
-			m_rightMouseHeld = true;
-		}
-	}
-	else if (event.type == sf::Event::MouseButtonReleased)
-	{
-		if (event.mouseButton.button == sf::Mouse::Left)
-		{
-			m_leftMouseHeld = false;
-		}
-		if (event.mouseButton.button == sf::Mouse::Right)
-		{
-			m_rightMouseHeld = false;
 		}
 	}
 }

@@ -4,6 +4,7 @@
 #include "grid.h"
 #include "material-type.h"
 #include "ui.h"
+#include "input-manager.h"
 
 #include <random>
 
@@ -34,6 +35,8 @@ private:
     Grid* m_grid = new Grid();
 
     UI* m_ui = new UI();
+
+    InputManager* m_inputManager = new InputManager();
 
     static std::random_device rd;
     static std::mt19937 gen;

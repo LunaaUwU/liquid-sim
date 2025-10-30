@@ -11,7 +11,7 @@ void UI::init(sf::VideoMode videoMode)
 	m_selectedMatShape.setFillColor(sf::Color(0, 0, 0, 0));
 	changeSelectedMat(MaterialType::Sand);
 
-	m_selectedMatFont.loadFromFile("../assets/fonts/Roboto/static/Roboto-Regular.ttf");
+	m_selectedMatFont.loadFromFile("../assets/fonts/ComicSans.ttf");
 
 	m_selectedMatText.setFont(m_selectedMatFont);
 	m_selectedMatText.setCharacterSize(40);

@@ -44,7 +44,4 @@ private:
 	std::vector<MaterialType> m_materialList;
 	MaterialType m_selectedMaterial;
 	int m_selectedMaterialIndex;
-
-	bool m_leftMouseHeld = false;
-	bool m_rightMouseHeld = false;
 };

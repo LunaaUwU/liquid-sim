@@ -27,7 +27,7 @@ void Game::render(sf::RenderWindow& window) const
 
 void Game::inputEvent(const sf::Event& event)
 {
-    m_grid->inputEvent(event);
+    m_inputManager->processEvent(event);
 }
 
 void Game::restart()
