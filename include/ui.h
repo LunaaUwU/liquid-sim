@@ -17,11 +17,17 @@ public:
 
 	void cleanup();
 
-	static void changeSelectedMat(MaterialType selectedMat);
+	void changeSelectedMat(int value);
+
+	static MaterialType SELECTED_MATERIAL;
+	
 
 private:
+	int m_selectedMaterialIndex;
+	std::vector<MaterialType> m_materialList;
 
 	static sf::RectangleShape m_selectedMatShape;
 	static sf::Text m_selectedMatText;
 	static sf::Font m_selectedMatFont;
+	static sf::RectangleShape m_spawnerCheckBox;
 };

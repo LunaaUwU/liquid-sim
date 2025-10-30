@@ -5,14 +5,6 @@
 
 void Grid::init(sf::VideoMode videoMode)
 {
-	InputManager::onScroll([this](float delta) {
-		if (delta < 0)
-			changeMat(1);
-		else
-			changeMat(-1);
-		return true;
-		});
-
 	InputManager::onLeftClick([this]() -> bool {
 		m_leftMouseHeld = true;
 		return true;
@@ -65,20 +57,6 @@ void Grid::init(sf::VideoMode videoMode)
 		posY += CELL_SIZE;
 		posX = 0.f;
 	}
-
-	int numMaterials = static_cast<int>(MaterialType::Count);
-	MaterialType material;
-	for (int i = 0; i < numMaterials; i++)
-	{
-		material = static_cast<MaterialType>(i);
-		if (material != MaterialType::Ground && material != MaterialType::Count && material != MaterialType::None)
-		{
-			m_materialList.push_back(material);
-		}
-	}
-	m_selectedMaterialIndex = 0;
-	m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
-	UI::changeSelectedMat(m_selectedMaterial);
 }
 
 void Grid::update(const sf::Int32 deltaMS)
@@ -154,7 +132,7 @@ void Grid::render(sf::RenderWindow& window) const
 
 void Grid::spawnBlock(Block* block)
 {
-	block->setMatType(m_selectedMaterial);
+	block->setMatType(UI::SELECTED_MATERIAL);
 	block->setIsSpawner(true);
 	m_activeGrid.push_back(block);
 }
@@ -681,21 +659,6 @@ bool Grid::isInsideGrid(int i, int j) const
 	return i >= 0 && i < m_rows && j >= 0 && j < m_columns;
 }
 
-void Grid::changeMat(int value)
-{
-	m_selectedMaterialIndex += value;
-	if (m_selectedMaterialIndex >= static_cast<int>(m_materialList.size()))
-	{
-		m_selectedMaterialIndex = 0;
-	}
-	if (m_selectedMaterialIndex < 0)
-	{
-		m_selectedMaterialIndex = m_materialList.size() - 1;
-	}
-	m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
-	UI::changeSelectedMat(m_selectedMaterial);
-}
-
 void Grid::placeBlock()
 {
 	m_mousePos = sf::Mouse::getPosition();
@@ -703,7 +666,7 @@ void Grid::placeBlock()
 
 	if (block->getMatType() == MaterialType::None)
 	{
-		block->setMatType(m_selectedMaterial);
+		block->setMatType(UI::SELECTED_MATERIAL);
 		m_activeGrid.push_back(block);
 	}
 }

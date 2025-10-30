@@ -30,8 +30,6 @@ private:
 
 	bool isInsideGrid(int i, int j) const;
 
-	void changeMat(int value);
-
 	void placeBlock();
 
 	void removeBlock();
@@ -46,10 +44,6 @@ private:
 	std::vector<std::vector<Block*>> m_grid;
 
 	std::vector<Block*> m_activeGrid;
-
-	std::vector<MaterialType> m_materialList;
-	MaterialType m_selectedMaterial;
-	int m_selectedMaterialIndex;
 
 	bool m_leftMouseHeld = false;
 	bool m_rightMouseHeld = false;
