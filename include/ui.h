@@ -5,6 +5,8 @@
 #include "material-type.h"
 #include "input-manager.h"
 
+class Grid;
+
 class UI
 {
 public:
@@ -24,6 +26,9 @@ public:
 
 private:
 
+	void updateCheckBox();
+
+
 	sf::VideoMode m_videoMode;
 
 	int m_selectedMaterialIndex;
@@ -33,4 +38,6 @@ private:
 	static sf::Text m_selectedMatText;
 	static sf::Font m_selectedMatFont;
 	static sf::RectangleShape m_spawnerCheckBox;
+
+	bool m_isCheckBoxChecked = false;
 };

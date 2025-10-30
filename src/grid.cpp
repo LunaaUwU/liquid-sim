@@ -667,6 +667,8 @@ void Grid::placeBlock()
 	if (block->getMatType() == MaterialType::None)
 	{
 		block->setMatType(UI::SELECTED_MATERIAL);
+		if (isSpawner)
+			block->setIsSpawner(true);
 		m_activeGrid.push_back(block);
 	}
 }

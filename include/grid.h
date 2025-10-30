@@ -24,6 +24,8 @@ public:
 
 	static constexpr float CELL_SIZE = 10.f;
 
+	static inline bool isSpawner = false;
+
 private:
 
 	void move(int i, int j);

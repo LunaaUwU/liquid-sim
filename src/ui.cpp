@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "grid.h"
 
 sf::RectangleShape UI::m_selectedMatShape;
 sf::Font UI::m_selectedMatFont;
@@ -14,6 +15,7 @@ void UI::init(sf::VideoMode& videoMode)
 	InputManager::onLeftClick([this]() -> bool {
 		if (m_spawnerCheckBox.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
 		{
+			updateCheckBox();
 			return true;
 		}
 		else
@@ -99,4 +101,20 @@ void UI::cleanup() {
 	m_selectedMatText = sf::Text();
 	m_selectedMatFont = sf::Font();
 	m_spawnerCheckBox = sf::RectangleShape();
+}
+
+void UI::updateCheckBox()
+{
+	if (m_isCheckBoxChecked)
+	{
+		m_isCheckBoxChecked = false;
+		m_spawnerCheckBox.setFillColor(sf::Color(255, 255, 255));
+		Grid::isSpawner = false;
+	}
+	else
+	{
+		m_isCheckBoxChecked = true;
+		m_spawnerCheckBox.setFillColor(sf::Color(0, 0, 0));
+		Grid::isSpawner = true;
+	}
 }
