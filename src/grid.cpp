@@ -5,6 +5,35 @@
 
 void Grid::init(sf::VideoMode videoMode)
 {
+	InputManager::onScroll([this](float delta) {
+		if (delta < 0)
+			changeMat(1);
+		else
+			changeMat(-1);
+		return true;
+		});
+
+	InputManager::onLeftClick([this]() -> bool {
+		m_leftMouseHeld = true;
+		return true;
+		});
+
+	InputManager::onRightClick([this]() -> bool {
+		m_rightMouseHeld = true;
+		return true;
+		});
+
+	InputManager::onLeftClickRelease([this]() -> bool {
+		m_leftMouseHeld = false;
+		return true;
+		});
+
+	InputManager::onRightClickRelease([this]() -> bool {
+		m_rightMouseHeld = false;
+		return true;
+		});
+
+
 	m_columns = videoMode.width / CELL_SIZE;
 	m_rows = videoMode.height / CELL_SIZE;
 	MaterialType type;
@@ -54,52 +83,13 @@ void Grid::init(sf::VideoMode videoMode)
 
 void Grid::update(const sf::Int32 deltaMS)
 {
-	if (InputManager::LEFT_MOUSE_HELD)
+	if (m_leftMouseHeld)
 	{
-		m_mousePos = sf::Mouse::getPosition();
-		Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
-
-		if (block->getMatType() == MaterialType::None)
-		{
-			block->setMatType(m_selectedMaterial);
-			m_activeGrid.push_back(block);
-		}
+		placeBlock();
 	}
-	if (InputManager::RIGHT_MOUSE_HELD)
+	else if (m_rightMouseHeld)
 	{
-		m_mousePos = sf::Mouse::getPosition();
-		Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
-		if (block->getMatType() != MaterialType::None)
-		{
-			block->setMatType(MaterialType::None);
-			block->setIsSpawner(false);
-			auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), block);
-			if (it != m_activeGrid.end())
-			{
-				m_activeGrid.erase(it);
-			}
-		}
-		/*if (m_selectedMaterial == MaterialType::None)
-		{
-			if (block->getMatType() != MaterialType::None)
-			{
-				block->setMatType(m_selectedMaterial);
-				auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), block);
-				if (it != m_activeGrid.end())
-				{
-					m_activeGrid.erase(it);
-				}
-			}
-		}
-		else
-		{
-			if (block->getMatType() == MaterialType::None)
-			{
-				block->setMatType(m_selectedMaterial);
-				block->setIsSpawner(true);
-				m_activeGrid.push_back(block);
-			}
-		}*/
+		removeBlock();
 	}
 	m_moveTimer += deltaMS;
 	std::sort(m_activeGrid.begin(), m_activeGrid.end(),
@@ -691,30 +681,66 @@ bool Grid::isInsideGrid(int i, int j) const
 	return i >= 0 && i < m_rows && j >= 0 && j < m_columns;
 }
 
-void Grid::inputEvent(const sf::Event& event)
+void Grid::changeMat(int value)
 {
-	if (event.type == sf::Event::MouseWheelScrolled)
+	m_selectedMaterialIndex += value;
+	if (m_selectedMaterialIndex >= static_cast<int>(m_materialList.size()))
 	{
-		if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+		m_selectedMaterialIndex = 0;
+	}
+	if (m_selectedMaterialIndex < 0)
+	{
+		m_selectedMaterialIndex = m_materialList.size() - 1;
+	}
+	m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
+	UI::changeSelectedMat(m_selectedMaterial);
+}
+
+void Grid::placeBlock()
+{
+	m_mousePos = sf::Mouse::getPosition();
+	Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
+
+	if (block->getMatType() == MaterialType::None)
+	{
+		block->setMatType(m_selectedMaterial);
+		m_activeGrid.push_back(block);
+	}
+}
+
+void Grid::removeBlock()
+{
+	m_mousePos = sf::Mouse::getPosition();
+	Block* block = m_grid[m_mousePos.y / CELL_SIZE][m_mousePos.x / CELL_SIZE];
+	if (block->getMatType() != MaterialType::None)
+	{
+		block->setMatType(MaterialType::None);
+		block->setIsSpawner(false);
+		auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), block);
+		if (it != m_activeGrid.end())
 		{
-			if (event.mouseWheelScroll.delta < 0)
-			{
-				m_selectedMaterialIndex++;
-				if (m_selectedMaterialIndex >= m_materialList.size())
-				{
-					m_selectedMaterialIndex = 0;
-				}
-			}
-			else if (event.mouseWheelScroll.delta > 0)
-			{
-				m_selectedMaterialIndex--;
-				if (m_selectedMaterialIndex < 0)
-				{
-					m_selectedMaterialIndex = m_materialList.size() - 1;
-				}
-			}
-			m_selectedMaterial = m_materialList[m_selectedMaterialIndex];
-			UI::changeSelectedMat(m_selectedMaterial);
+			m_activeGrid.erase(it);
 		}
 	}
+	/*if (m_selectedMaterial == MaterialType::None)
+	{
+		if (block->getMatType() != MaterialType::None)
+		{
+			block->setMatType(m_selectedMaterial);
+			auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), block);
+			if (it != m_activeGrid.end())
+			{
+				m_activeGrid.erase(it);
+			}
+		}
+	}
+	else
+	{
+		if (block->getMatType() == MaterialType::None)
+		{
+			block->setMatType(m_selectedMaterial);
+			block->setIsSpawner(true);
+			m_activeGrid.push_back(block);
+		}
+	}*/
 }

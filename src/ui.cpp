@@ -6,6 +6,17 @@ sf::Text UI::m_selectedMatText;
 
 void UI::init(sf::VideoMode videoMode)
 {
+
+	InputManager::onLeftClick([this]() -> bool {
+		if (m_selectedMatShape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) ||
+			m_selectedMatText.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+		{
+			return true;
+		}
+		else
+			return false;
+		});
+
 	m_selectedMatShape.setSize(sf::Vector2f(30.f, 30.f));
 	m_selectedMatShape.setPosition(sf::Vector2f(20.f, videoMode.height - 50.f));
 	m_selectedMatShape.setFillColor(sf::Color(0, 0, 0, 0));

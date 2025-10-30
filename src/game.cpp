@@ -5,8 +5,8 @@ std::mt19937 Game::gen(Game::rd());
 
 void Game::init(sf::VideoMode videoMode)
 {
+    m_ui->init(videoMode);
     m_grid->init(videoMode);
-	m_ui->init(videoMode);
 }
 
 void Game::update(const sf::Int32 deltaMS)

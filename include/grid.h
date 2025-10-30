@@ -30,6 +30,12 @@ private:
 
 	bool isInsideGrid(int i, int j) const;
 
+	void changeMat(int value);
+
+	void placeBlock();
+
+	void removeBlock();
+
 	sf::Vector2i m_mousePos;
 
 	float m_moveTimer = 0.f;
@@ -44,4 +50,7 @@ private:
 	std::vector<MaterialType> m_materialList;
 	MaterialType m_selectedMaterial;
 	int m_selectedMaterialIndex;
+
+	bool m_leftMouseHeld = false;
+	bool m_rightMouseHeld = false;
 };

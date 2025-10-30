@@ -3,6 +3,7 @@
 #include <SFML/Audio.hpp>
 
 #include "material-type.h"
+#include "input-manager.h"
 
 class UI
 {
