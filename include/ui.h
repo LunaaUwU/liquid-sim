@@ -9,7 +9,7 @@ class UI
 {
 public:
 
-	void init(sf::VideoMode videoMode);
+	void init(sf::VideoMode& videoMode);
 
 	void update(sf::Int32 deltaMS);
 
@@ -23,6 +23,9 @@ public:
 	
 
 private:
+
+	sf::VideoMode m_videoMode;
+
 	int m_selectedMaterialIndex;
 	std::vector<MaterialType> m_materialList;
 

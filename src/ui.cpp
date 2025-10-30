@@ -7,8 +7,10 @@ sf::RectangleShape UI::m_spawnerCheckBox;
 
 MaterialType UI::SELECTED_MATERIAL;
 
-void UI::init(sf::VideoMode videoMode)
+void UI::init(sf::VideoMode& videoMode)
 {
+
+	m_videoMode = videoMode;
 	InputManager::onLeftClick([this]() -> bool {
 		if (m_spawnerCheckBox.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
 		{
@@ -27,29 +29,28 @@ void UI::init(sf::VideoMode videoMode)
 			return false;
 		});
 
-	InputManager::onScroll([this, videoMode](float delta) {
+	InputManager::onScroll([this](float delta) {
 		if (delta < 0)
 			changeSelectedMat(1);
 		else
 			changeSelectedMat(-1);
-		m_spawnerCheckBox.setPosition(sf::Vector2f(75.f + m_selectedMatText.getLocalBounds().width, videoMode.height - 50.f));
 		return false;
 		});
 
 	m_selectedMatShape.setSize(sf::Vector2f(30.f, 30.f));
-	m_selectedMatShape.setPosition(sf::Vector2f(20.f, videoMode.height - 50.f));
+	m_selectedMatShape.setPosition(sf::Vector2f(20.f, m_videoMode.height - 50.f));
 	m_selectedMatShape.setFillColor(materialToColor(MaterialType::Sand));
 
 	m_selectedMatFont.loadFromFile("../assets/fonts/ComicSans.ttf");
 
 	m_selectedMatText.setFont(m_selectedMatFont);
 	m_selectedMatText.setCharacterSize(40);
-	m_selectedMatText.setPosition(sf::Vector2f(60.f, videoMode.height - 60.f));
+	m_selectedMatText.setPosition(sf::Vector2f(60.f, m_videoMode.height - 60.f));
 	m_selectedMatText.setFillColor(sf::Color(255, 255, 255));
 	m_selectedMatText.setString("Sand");
 
 	m_spawnerCheckBox.setSize(sf::Vector2f(30.f, 30.f));
-	m_spawnerCheckBox.setPosition(sf::Vector2f(75.f + m_selectedMatText.getLocalBounds().width, videoMode.height - 50.f));
+	m_spawnerCheckBox.setPosition(sf::Vector2f(75.f + m_selectedMatText.getLocalBounds().width, m_videoMode.height - 50.f));
 	m_spawnerCheckBox.setFillColor(sf::Color(255, 255, 255));
 	m_spawnerCheckBox.setOutlineThickness(-2.f);
 	m_spawnerCheckBox.setOutlineColor(sf::Color(0, 0, 0));
@@ -89,6 +90,7 @@ void UI::changeSelectedMat(int value)
 	SELECTED_MATERIAL = m_materialList[m_selectedMaterialIndex];
 	m_selectedMatShape.setFillColor(materialToColor(SELECTED_MATERIAL));
 	m_selectedMatText.setString(materialToString(SELECTED_MATERIAL));
+	m_spawnerCheckBox.setPosition(sf::Vector2f(75.f + m_selectedMatText.getLocalBounds().width, m_videoMode.height - 50.f));
 }
 
 void UI::cleanup() {
