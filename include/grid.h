@@ -24,6 +24,8 @@ public:
 
 	void clearBoard();
 
+	void flipBoard();
+
 	static constexpr float CELL_SIZE = 10.f;
 
 	bool getIsSpawner()

@@ -158,6 +158,34 @@ void Grid::clearBoard()
 	);
 }
 
+void Grid::flipBoard()
+{
+	//std::vector<std::vector<Block*>> newGrid = m_grid; // copy structure
+
+	//for (int i = 0; i < m_rows; ++i)
+	//{
+	//	for (int j = 0; j < m_columns; ++j)
+	//	{
+	//		if (!m_grid[m_rows - i - 1][j]->getIsStarter())
+	//		{
+	//			newGrid[i][j]->setMatType(m_grid[m_rows - 1 - i][j]->getMatType());
+	//			newGrid[i][j]->setIsSpawner(m_grid[m_rows - 1 - i][j]->getIsSpawner());
+	//			newGrid[i][j]->setMoveDir(m_grid[m_rows - 1 - i][j]->getMoveDir());
+	//			newGrid[i][j]->setCondensationTimer(m_grid[m_rows - 1 - i][j]->getCondensationTimer());
+	//		}
+	//	}
+	//}
+
+	//m_grid = std::move(newGrid);
+
+	//// Rebuild active grid pointers
+	//m_activeGrid.clear();
+	//for (int i = 0; i < m_rows; ++i)
+	//	for (int j = 0; j < m_columns; ++j)
+	//		if (m_grid[i][j]->getMatType() != MaterialType::None)
+	//			m_activeGrid.push_back(m_grid[i][j]);
+}
+
 void Grid::move(int i, int j)
 {
 	MaterialType oldMat = m_grid[i][j]->getMatType();
