@@ -160,30 +160,67 @@ void Grid::clearBoard()
 
 void Grid::flipBoard()
 {
-	//std::vector<std::vector<Block*>> newGrid = m_grid; // copy structure
+	const int excludedTopRows = 1;
+	const int excludedBottomRows = 6;
 
-	//for (int i = 0; i < m_rows; ++i)
-	//{
-	//	for (int j = 0; j < m_columns; ++j)
-	//	{
-	//		if (!m_grid[m_rows - i - 1][j]->getIsStarter())
-	//		{
-	//			newGrid[i][j]->setMatType(m_grid[m_rows - 1 - i][j]->getMatType());
-	//			newGrid[i][j]->setIsSpawner(m_grid[m_rows - 1 - i][j]->getIsSpawner());
-	//			newGrid[i][j]->setMoveDir(m_grid[m_rows - 1 - i][j]->getMoveDir());
-	//			newGrid[i][j]->setCondensationTimer(m_grid[m_rows - 1 - i][j]->getCondensationTimer());
-	//		}
-	//	}
-	//}
+	if (m_rows <= excludedTopRows + excludedBottomRows)
+		return; // not enough rows to flip
 
-	//m_grid = std::move(newGrid);
+	std::vector<std::vector<Block*>> newGrid = m_grid; // same structure
 
-	//// Rebuild active grid pointers
-	//m_activeGrid.clear();
-	//for (int i = 0; i < m_rows; ++i)
-	//	for (int j = 0; j < m_columns; ++j)
-	//		if (m_grid[i][j]->getMatType() != MaterialType::None)
-	//			m_activeGrid.push_back(m_grid[i][j]);
+	int start = excludedTopRows;
+	int end = m_rows - excludedBottomRows - 1;
+	int flipRange = end - start; // how many rows we flip
+
+	for (int i = start; i <= end; ++i)
+	{
+		int flippedRow = end - (i - start); // symmetrical within flip range
+
+		for (int j = 0; j < m_columns; ++j)
+		{
+			if (!m_grid[flippedRow][j]->getIsStarter())
+			{
+				newGrid[i][j]->setMatType(m_grid[flippedRow][j]->getMatType());
+				newGrid[i][j]->setIsSpawner(m_grid[flippedRow][j]->getIsSpawner());
+				newGrid[i][j]->setMoveDir(m_grid[flippedRow][j]->getMoveDir());
+				newGrid[i][j]->setCondensationTimer(m_grid[flippedRow][j]->getCondensationTimer());
+			}
+		}
+	}
+
+	// Preserve top excluded rows
+	for (int i = 0; i < excludedTopRows; ++i)
+	{
+		for (int j = 0; j < m_columns; ++j)
+		{
+			newGrid[i][j]->setMatType(m_grid[i][j]->getMatType());
+			newGrid[i][j]->setIsSpawner(m_grid[i][j]->getIsSpawner());
+			newGrid[i][j]->setMoveDir(m_grid[i][j]->getMoveDir());
+			newGrid[i][j]->setCondensationTimer(m_grid[i][j]->getCondensationTimer());
+		}
+	}
+
+	// Preserve bottom excluded rows
+	for (int i = m_rows - excludedBottomRows; i < m_rows; ++i)
+	{
+		for (int j = 0; j < m_columns; ++j)
+		{
+			newGrid[i][j]->setMatType(m_grid[i][j]->getMatType());
+			newGrid[i][j]->setIsSpawner(m_grid[i][j]->getIsSpawner());
+			newGrid[i][j]->setMoveDir(m_grid[i][j]->getMoveDir());
+			newGrid[i][j]->setCondensationTimer(m_grid[i][j]->getCondensationTimer());
+		}
+	}
+
+	clearBoard();
+	m_grid = std::move(newGrid);
+
+	// rebuild active grid
+	m_activeGrid.clear();
+	for (int i = 0; i < m_rows; ++i)
+		for (int j = 0; j < m_columns; ++j)
+			if (m_grid[i][j]->getMatType() != MaterialType::None)
+				m_activeGrid.push_back(m_grid[i][j]);
 }
 
 void Grid::move(int i, int j)
