@@ -158,71 +158,6 @@ void Grid::clearBoard()
 	);
 }
 
-void Grid::flipBoard()
-{
-	const int excludedTopRows = 1;
-	const int excludedBottomRows = 6;
-
-	if (m_rows <= excludedTopRows + excludedBottomRows)
-		return; // not enough rows to flip
-
-	std::vector<std::vector<Block*>> newGrid = m_grid; // same structure
-
-	int start = excludedTopRows;
-	int end = m_rows - excludedBottomRows - 1;
-	int flipRange = end - start; // how many rows we flip
-
-	for (int i = start; i <= end; ++i)
-	{
-		int flippedRow = end - (i - start); // symmetrical within flip range
-
-		for (int j = 0; j < m_columns; ++j)
-		{
-			if (!m_grid[flippedRow][j]->getIsStarter())
-			{
-				newGrid[i][j]->setMatType(m_grid[flippedRow][j]->getMatType());
-				newGrid[i][j]->setIsSpawner(m_grid[flippedRow][j]->getIsSpawner());
-				newGrid[i][j]->setMoveDir(m_grid[flippedRow][j]->getMoveDir());
-				newGrid[i][j]->setCondensationTimer(m_grid[flippedRow][j]->getCondensationTimer());
-			}
-		}
-	}
-
-	// Preserve top excluded rows
-	for (int i = 0; i < excludedTopRows; ++i)
-	{
-		for (int j = 0; j < m_columns; ++j)
-		{
-			newGrid[i][j]->setMatType(m_grid[i][j]->getMatType());
-			newGrid[i][j]->setIsSpawner(m_grid[i][j]->getIsSpawner());
-			newGrid[i][j]->setMoveDir(m_grid[i][j]->getMoveDir());
-			newGrid[i][j]->setCondensationTimer(m_grid[i][j]->getCondensationTimer());
-		}
-	}
-
-	// Preserve bottom excluded rows
-	for (int i = m_rows - excludedBottomRows; i < m_rows; ++i)
-	{
-		for (int j = 0; j < m_columns; ++j)
-		{
-			newGrid[i][j]->setMatType(m_grid[i][j]->getMatType());
-			newGrid[i][j]->setIsSpawner(m_grid[i][j]->getIsSpawner());
-			newGrid[i][j]->setMoveDir(m_grid[i][j]->getMoveDir());
-			newGrid[i][j]->setCondensationTimer(m_grid[i][j]->getCondensationTimer());
-		}
-	}
-
-	clearBoard();
-	m_grid = std::move(newGrid);
-
-	// rebuild active grid
-	m_activeGrid.clear();
-	for (int i = 0; i < m_rows; ++i)
-		for (int j = 0; j < m_columns; ++j)
-			if (m_grid[i][j]->getMatType() != MaterialType::None)
-				m_activeGrid.push_back(m_grid[i][j]);
-}
-
 void Grid::move(int i, int j)
 {
 	MaterialType oldMat = m_grid[i][j]->getMatType();
@@ -330,24 +265,24 @@ void Grid::move(int i, int j)
 		{
 			if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::None)
 			{
+				// Fall down normally
+				m_grid[i + 1][j]->setMatType(MaterialType::Stone);
 				m_grid[i][j]->setMatType(MaterialType::None);
-				m_grid[i + 1][j]->setMatType(oldMat);
+
 				auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
-				if (it != m_activeGrid.end())
-				{
-					m_activeGrid.erase(it);
-				}
+				if (it != m_activeGrid.end()) m_activeGrid.erase(it);
 				m_activeGrid.push_back(m_grid[i + 1][j]);
 			}
-			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Water && isInsideGrid(i - 1, j) && m_grid[i - 1][j]->getMatType() == MaterialType::None)
+			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Water)
 			{
+				// Swap stone and water – stone sinks, water rises
+				m_grid[i + 1][j]->setMatType(MaterialType::Stone);
 				m_grid[i][j]->setMatType(MaterialType::Water);
-				m_grid[i + 1][j]->setMatType(MaterialType::Stone);
 			}
-			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Lava && isInsideGrid(i - 1, j) && m_grid[i - 1][j]->getMatType() == MaterialType::None)
+			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Lava)
 			{
-				m_grid[i][j]->setMatType(MaterialType::Lava);
 				m_grid[i + 1][j]->setMatType(MaterialType::Stone);
+				m_grid[i][j]->setMatType(MaterialType::Lava);
 			}
 			break;
 		}

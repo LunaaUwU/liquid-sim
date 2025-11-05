@@ -17,11 +17,6 @@ void UI::init(sf::VideoMode& videoMode, Grid* grid)
 			m_grid->clearBoard();
 			return true;
 		}
-		else if (m_flipButton.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
-		{
-			m_grid->flipBoard();
-			return true;
-		}
 		else
 			return false;
 		});
@@ -71,7 +66,7 @@ void UI::init(sf::VideoMode& videoMode, Grid* grid)
 	m_clearText.setPosition(sf::Vector2f(m_videoMode.width - 70.f - m_clearText.getGlobalBounds().width, m_videoMode.height - 60.f));
 	m_clearText.setFillColor(sf::Color(255, 255, 255));
 
-	m_flipButton.setSize(sf::Vector2f(30.f, 30.f));
+	/*m_flipButton.setSize(sf::Vector2f(30.f, 30.f));
 	m_flipButton.setPosition(sf::Vector2f(m_videoMode.width - 120.f - m_clearText.getGlobalBounds().width, m_videoMode.height - 50.f));
 	m_flipButton.setFillColor(sf::Color(80, 80, 80));
 
@@ -79,7 +74,7 @@ void UI::init(sf::VideoMode& videoMode, Grid* grid)
 	m_flipText.setCharacterSize(40);
 	m_flipText.setString("Flip");
 	m_flipText.setPosition(sf::Vector2f(m_videoMode.width - 140.f - m_clearText.getGlobalBounds().width - m_flipText.getGlobalBounds().width, m_videoMode.height - 60.f));
-	m_flipText.setFillColor(sf::Color(255, 255, 255));
+	m_flipText.setFillColor(sf::Color(255, 255, 255));*/
 	
 	int numMaterials = static_cast<int>(MaterialType::Count);
 	MaterialType material;
@@ -102,8 +97,6 @@ void UI::render(sf::RenderWindow& window) const
 	window.draw(m_spawnerCheckBox);
 	window.draw(m_clearButton);
 	window.draw(m_clearText);
-	window.draw(m_flipButton);
-	window.draw(m_flipText);
 }
 
 void UI::changeSelectedMat(int value)

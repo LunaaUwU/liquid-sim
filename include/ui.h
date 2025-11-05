@@ -12,8 +12,6 @@ public:
 
 	void init(sf::VideoMode& videoMode, Grid* grid);
 
-	void update(sf::Int32 deltaMS);
-
 	void render(sf::RenderWindow& window) const;
 
 	void changeSelectedMat(int value);
@@ -38,8 +36,6 @@ private:
 	sf::RectangleShape m_spawnerCheckBox;
 	sf::RectangleShape m_clearButton;
 	sf::Text m_clearText;
-	sf::RectangleShape m_flipButton;
-	sf::Text m_flipText;
 
 	bool m_isCheckBoxChecked = false;
 };
