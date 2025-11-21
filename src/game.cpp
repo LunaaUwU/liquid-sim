@@ -3,13 +3,13 @@
 std::random_device Game::rd;
 std::mt19937 Game::gen(Game::rd());
 
-void Game::init(sf::VideoMode videoMode)
+void Game::init(const sf::VideoMode videoMode) const
 {
     m_ui->init(videoMode, m_grid);
     m_grid->init(videoMode);
 }
 
-void Game::update(const sf::Int32 deltaMS)
+void Game::update(const sf::Int32 deltaMS) const
 {
     m_grid->update(deltaMS);
 }
@@ -25,17 +25,12 @@ void Game::render(sf::RenderWindow& window) const
     window.display();
 }
 
-void Game::inputEvent(const sf::Event& event)
+void Game::inputEvent(const sf::Event& event) const
 {
-    m_inputManager->processEvent(event);
+    InputManager::processEvent(event);
 }
 
-void Game::restart()
-{
-    
-}
-
-void Game::cleanup()
+void Game::restart() const
 {
     
 }

@@ -2,7 +2,7 @@
 
 MaterialType UI::SELECTED_MATERIAL;
 
-void UI::init(sf::VideoMode& videoMode, Grid* grid)
+void UI::init(const sf::VideoMode& videoMode, Grid* grid)
 {
 	m_grid = grid;
 	m_videoMode = videoMode;
@@ -65,22 +65,11 @@ void UI::init(sf::VideoMode& videoMode, Grid* grid)
 	m_clearText.setString("Clear");
 	m_clearText.setPosition(sf::Vector2f(m_videoMode.width - 70.f - m_clearText.getGlobalBounds().width, m_videoMode.height - 60.f));
 	m_clearText.setFillColor(sf::Color(255, 255, 255));
-
-	/*m_flipButton.setSize(sf::Vector2f(30.f, 30.f));
-	m_flipButton.setPosition(sf::Vector2f(m_videoMode.width - 120.f - m_clearText.getGlobalBounds().width, m_videoMode.height - 50.f));
-	m_flipButton.setFillColor(sf::Color(80, 80, 80));
-
-	m_flipText.setFont(m_uiFont);
-	m_flipText.setCharacterSize(40);
-	m_flipText.setString("Flip");
-	m_flipText.setPosition(sf::Vector2f(m_videoMode.width - 140.f - m_clearText.getGlobalBounds().width - m_flipText.getGlobalBounds().width, m_videoMode.height - 60.f));
-	m_flipText.setFillColor(sf::Color(255, 255, 255));*/
 	
 	int numMaterials = static_cast<int>(MaterialType::Count);
-	MaterialType material;
 	for (int i = 0; i < numMaterials; i++)
 	{
-		material = static_cast<MaterialType>(i);
+		MaterialType material = static_cast<MaterialType>(i);
 		if (material != MaterialType::Ground && material != MaterialType::Count && material != MaterialType::None)
 		{
 			m_materialList.push_back(material);

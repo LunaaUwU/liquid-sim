@@ -18,7 +18,7 @@ public:
 	static void onRightClickRelease(const MouseButtonCallback& callback);
 
 
-	void processEvent(const sf::Event& event);
+	static void processEvent(const sf::Event& event);
 
 private:
 	static std::vector<MouseScrollCallback> m_scrollCallbacks;

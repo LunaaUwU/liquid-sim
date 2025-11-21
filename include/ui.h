@@ -1,7 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-
 #include "material-type.h"
 #include "input-manager.h"
 #include "grid.h"
@@ -10,7 +8,7 @@ class UI
 {
 public:
 
-	void init(sf::VideoMode& videoMode, Grid* grid);
+	void init(const sf::VideoMode& videoMode, Grid* grid);
 
 	void render(sf::RenderWindow& window) const;
 
@@ -27,7 +25,7 @@ private:
 
 	sf::VideoMode m_videoMode;
 
-	int m_selectedMaterialIndex;
+	int m_selectedMaterialIndex = 0;
 	std::vector<MaterialType> m_materialList;
 
 	sf::Font m_uiFont;
