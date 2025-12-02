@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "grid.h"
+#include "material-type.h"
 #include "ui.h"
 #include "input-manager.h"
 
@@ -12,15 +13,17 @@ class Game
 {
 public:
 
-    void init(const sf::VideoMode videoMode) const;
+    void init(sf::VideoMode videoMode);
 
-    void update(sf::Int32 deltaMS) const;
+    void update(sf::Int32 deltaMS);
 
     void render(sf::RenderWindow& window) const;
 
-    static void inputEvent(const sf::Event& event) const;
+    void inputEvent(const sf::Event& event);
 
-    void restart() const;
+    void restart();
+
+    void cleanup();
 
 
     static constexpr float MOVE_INTERVAL = 5.f;

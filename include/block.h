@@ -21,22 +21,22 @@ public:
 
     void setMatType(MaterialType type);
 
-    sf::Vector2f getPos() const
+    sf::Vector2f getPos()
     {
         return m_shape.getPosition();
     }
 
-    int getGridI() const
+    int getGridI()
     {
         return gridI;
     }
 
-    int getGridJ() const
+    int getGridJ()
     {
         return gridJ;
     }
 
-    int getMoveDir() const
+    int getMoveDir()
     {
         return m_moveDirection;
     }
@@ -46,7 +46,7 @@ public:
         m_moveDirection = waterMoveDir;
     }
 
-    bool getIsSpawner() const
+    bool getIsSpawner()
     {
         return m_isSpawner;
     }
@@ -66,7 +66,7 @@ public:
         }
     }
 
-    float getCondensationTimer() const
+    float getCondensationTimer()
     {
         return m_condensationTimer;
     }
@@ -76,7 +76,7 @@ public:
         m_condensationTimer = condensationTimer;
     }
 
-    bool getIsStarter() const
+    bool getIsStarter()
     {
         return m_isStarter;
     }
@@ -91,12 +91,12 @@ public:
 
 private:
 
-    int gridI = 0;
-    int gridJ = 0;
+    int gridI;
+    int gridJ;
 
     sf::RectangleShape m_shape;
 
-    MaterialType m_materialType = MaterialType::None;
+    MaterialType m_materialType;
 
     bool m_isSpawner = false;
     bool m_isStarter = false;

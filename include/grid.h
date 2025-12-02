@@ -1,6 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
 #include "block.h"
+#include "material-type.h"
 
 class Game;
 

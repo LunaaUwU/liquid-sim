@@ -19,13 +19,14 @@ int main()
     while (window.isOpen())
     {
 
-        elapsed = clock.restart();
+        sf::Time elapsed = clock.restart();
         fps = 1.f / elapsed.asSeconds();
 
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
             if (event.type == sf::Event::Closed)
             {
+                game->cleanup();
                 window.close();
             }
 

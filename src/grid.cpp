@@ -160,7 +160,8 @@ void Grid::clearBoard()
 
 void Grid::move(int i, int j)
 {
-	switch (MaterialType oldMat = m_grid[i][j]->getMatType())
+	MaterialType oldMat = m_grid[i][j]->getMatType();
+	switch (oldMat)
 	{
 		case MaterialType::Sand:
 		{
@@ -274,7 +275,7 @@ void Grid::move(int i, int j)
 			}
 			else if (isInsideGrid(i + 1, j) && m_grid[i + 1][j]->getMatType() == MaterialType::Water)
 			{
-				// Swap stone and water - stone sinks, water rises
+				// Swap stone and water – stone sinks, water rises
 				m_grid[i + 1][j]->setMatType(MaterialType::Stone);
 				m_grid[i][j]->setMatType(MaterialType::Water);
 			}
@@ -436,8 +437,6 @@ void Grid::move(int i, int j)
 				m_grid[i - 1][j]->setMatType(oldMat);
 				m_grid[i][j]->setMoveDir(0);
 				m_grid[i - 1][j]->setMoveDir(0);
-				m_grid[i - 1][j]->setCondensationTimer(m_grid[i][j]->getCondensationTimer());
-				m_grid[i][j]->setCondensationTimer(0);
 				auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
 				if (it != m_activeGrid.end())
 				{
@@ -510,8 +509,6 @@ void Grid::move(int i, int j)
 					m_grid[i][j - 1]->setMatType(oldMat);
 					m_grid[i][j]->setMoveDir(0);
 					m_grid[i][j - 1]->setMoveDir(1);
-					m_grid[i][j - 1]->setCondensationTimer(m_grid[i][j]->getCondensationTimer());
-					m_grid[i][j]->setCondensationTimer(0);
 					auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
 					if (it != m_activeGrid.end())
 					{
@@ -529,8 +526,6 @@ void Grid::move(int i, int j)
 					m_grid[i][j + 1]->setMatType(oldMat);
 					m_grid[i][j]->setMoveDir(0);
 					m_grid[i][j + 1]->setMoveDir(2);
-					m_grid[i][j + 1]->setCondensationTimer(m_grid[i][j]->getCondensationTimer());
-					m_grid[i][j]->setCondensationTimer(0);
 					auto it = std::find(m_activeGrid.begin(), m_activeGrid.end(), m_grid[i][j]);
 					if (it != m_activeGrid.end())
 					{
