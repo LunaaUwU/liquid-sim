@@ -38,7 +38,7 @@ void UI::init(sf::VideoMode& videoMode, Grid* grid)
 		return false;
 		});
 
-	m_uiFont.loadFromFile("../assets/fonts/ComicSans.ttf");
+	m_uiFont.loadFromFile("assets/fonts/ComicSans.ttf");
 
 	m_selectedMatShape.setSize(sf::Vector2f(30.f, 30.f));
 	m_selectedMatShape.setPosition(sf::Vector2f(20.f, m_videoMode.height - 50.f));
